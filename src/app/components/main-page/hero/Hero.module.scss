@@ -1,0 +1,625 @@
+// Анимации появления
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInBlur {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-5deg) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.hero {
+  position: relative;
+  min-height: 85vh;
+  background: url("/images/hero.jpg") center / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-bottom-left-radius: 120px;
+  border-bottom-right-radius: 120px;
+  overflow: hidden;
+  padding: 60px 20px;
+
+  // Анимация фона при загрузке
+  // animation: fadeInScale 1.2s ease-out;
+
+  form {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 25px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+
+    // Анимация для каждого элемента формы
+    .input_group {
+      animation: fadeInUp 0.8s ease-out;
+      animation-fill-mode: both;
+
+      @for $i from 1 through 3 {
+        &:nth-child(#{$i}) {
+          animation-delay: 0.6s + ($i * 0.15s);
+        }
+      }
+    }
+
+    button {
+      animation: fadeInUp 0.8s ease-out;
+      animation-delay: 1.1s;
+      animation-fill-mode: both;
+    }
+
+    @media (max-width: 1024px) {
+      justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+
+      gap: 20px;
+    }
+
+    label {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-left: 15px;
+      position: relative;
+      display: inline-block;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: #ee122a;
+        transition: width 0.3s ease;
+      }
+
+      &:hover::after {
+        width: 100%;
+      }
+    }
+
+    input,
+    select {
+      padding: 18px 30px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      color: white;
+      font-size: 15px;
+      min-width: 220px;
+      transition: all 0.3s ease;
+      outline: none;
+
+      // Анимация при фокусе
+      &:focus {
+        border-color: #ee122a;
+        box-shadow:
+          0 0 0 3px rgba(238, 18, 42, 0.2),
+          0 0 20px rgba(238, 18, 42, 0.2);
+        background: rgba(255, 255, 255, 0.12);
+        transform: scale(1.02);
+      }
+
+      &:hover {
+        border-color: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 300;
+        transition: opacity 0.3s ease;
+      }
+
+      &:focus::placeholder {
+        opacity: 0.7;
+      }
+    }
+
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 25px center;
+      background-size: 16px;
+      padding-right: 50px;
+      cursor: pointer;
+
+      option {
+        background-color: #1a1a1a;
+        color: white;
+      }
+    }
+
+    button {
+      padding: 18px 44px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #ee122a 0%, #ff2a42 100%);
+      color: white;
+      border: none;
+      font-size: 16px;
+      font-weight: 400;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+      box-shadow: 0 10px 20px rgba(238, 18, 42, 0.2);
+      position: relative;
+      overflow: hidden;
+
+      // Shimmer эффект при загрузке
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        animation: shimmer 3s infinite;
+        animation-delay: 1.5s;
+      }
+
+      @media (max-width: 768px) {
+        width: 100%;
+        padding: 16px 30px;
+      }
+
+      &:hover {
+        background: linear-gradient(135deg, #ff2a42 0%, #ff4459 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(238, 18, 42, 0.4);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.65) 50%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  z-index: 1;
+  border-bottom-left-radius: 120px;
+  border-bottom-right-radius: 120px;
+  // Плавное появление overlay
+  // animation: fadeInScale 1s ease-out;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  justify-content: center;
+  max-width: 1300px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin-top: 30px;
+
+  // Анимация для каждого элемента контента
+  > * {
+    animation: slideInBlur 0.8s ease-out;
+    animation-fill-mode: both;
+  }
+
+  .count {
+    animation: fadeInLeft 0.8s ease-out;
+    animation-delay: 0.1s;
+    animation-fill-mode: both;
+  }
+
+  h1 {
+    animation: fadeInRight 0.8s ease-out;
+    animation-delay: 0.2s;
+    animation-fill-mode: both;
+
+    // Анимация градиента текста
+    background: linear-gradient(90deg, #fff, #f0f0f0, #fff, #f0f0f0);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation:
+      gradientShift 8s ease infinite,
+      fadeInRight 0.8s ease-out;
+    animation-delay: 0.2s, 0s;
+  }
+
+  p {
+    animation: fadeInLeft 0.8s ease-out;
+    animation-delay: 0.3s;
+    animation-fill-mode: both;
+  }
+
+  h1 {
+    font-size: 72px;
+    line-height: 1.2;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+
+    // Эффект свечения при наведении
+    transition: text-shadow 0.3s ease;
+
+    &:hover {
+      text-shadow:
+        0 0 20px rgba(255, 255, 255, 0.3),
+        0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      font-size: 48px;
+    }
+  }
+
+  p {
+    font-size: 20px;
+    line-height: 1.6;
+    opacity: 0.95;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: inline-block;
+
+    // Подчеркивание при наведении
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ee122a, transparent);
+      transition: width 0.3s ease;
+    }
+
+    &:hover::after {
+      width: 80%;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 18px;
+      padding: 0 20px;
+    }
+  }
+}
+
+.count {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 14px 28px;
+  border-radius: 50px;
+  display: inline-flex;
+  justify-content: center;
+  width: fit-content;
+  align-items: center;
+  margin: 0 auto;
+  gap: 15px;
+  font-size: 24px;
+  font-weight: 700;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+
+  // Shimmer эффект при загрузке
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    animation: shimmer 3s infinite;
+    animation-delay: 0.5s;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  span {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.3;
+    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.95);
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover span {
+    opacity: 1;
+  }
+}
+
+.main_title {
+  font-size: 78px;
+  line-height: 1.2;
+  font-weight: 400;
+  display: block;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #fff 0%, #f0f0f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation:
+    slideInBlur 0.8s ease-out,
+    gradientShift 8s ease infinite;
+  animation-delay: 0.2s, 0.8s;
+
+  @media (max-width: 768px) {
+    font-size: 48px;
+  }
+}
+
+.subtitle {
+  font-size: 18px;
+  line-height: 1.6;
+  opacity: 0.95;
+  max-width: 600px;
+  margin: 0 auto;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.95);
+  animation: fadeInUp 0.8s ease-out;
+  animation-delay: 0.4s;
+  animation-fill-mode: both;
+}
+
+.input_group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  flex: 1;
+
+  // Эффект при фокусе внутри группы
+  &:focus-within {
+    label {
+      // color: #ee122a;
+
+      // &::after {
+      //   width: 100%;
+      // }
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+// Дополнительные декоративные элементы
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.2) 80%,
+    transparent 100%
+  );
+  z-index: 3;
+  animation: fadeInScale 1.5s ease-out;
+}
+
+// Адаптивность
+@media (max-width: 1024px) {
+  .hero {
+    min-height: 80vh;
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+
+    .content {
+      gap: 40px;
+
+      h1 {
+        font-size: 56px;
+      }
+    }
+  }
+
+  .overlay {
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 100vh;
+    padding: 60px 20px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    justify-content: flex-end;
+
+    .content {
+      margin-top: 50px;
+      gap: 30px;
+      margin-top: 0;
+
+      h1 {
+        font-size: 26px;
+        width: 100%;
+      }
+
+      p {
+        font-size: 14px;
+        margin-left: 0;
+      }
+    }
+
+    input,
+    select {
+      width: 100%;
+    }
+  }
+
+  .overlay {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .count {
+    font-size: 20px;
+    padding: 12px 24px;
+
+    span {
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .hero {
+    .content {
+      gap: 20px;
+      h1 {
+        font-size: 20px;
+      }
+      p {
+        font-size: 12px;
+      }
+      input,
+      select {
+        padding: 10px 10px;
+        font-size: 14px;
+      }
+    }
+    .count {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-top: 20px;
+
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+}

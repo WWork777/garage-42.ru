@@ -1,66 +1,65 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Hero from "./components/main-page/hero/Hero";
+import How from "./components/main-page/how/How";
+import Services from "./components/main-page/services/Services";
+import UnderHero from "./components/main-page/underhero/Underhero";
+import Faq from "./components/main-page/faq/Faq";
+import Rewievs from "./components/main-page/rewievs/Rewievs";
+
+export async function generateMetadata() {
+  return {
+    title: "СТО Кемерово | Автосервис и ремонт автомобилей в Кемерово",
+    description:
+      "Профессиональный автосервис в Кемерово. Ремонт и обслуживание автомобилей любых марок. Диагностика, ТО, сварочные работы, ремонт подвески и двигателя. Гарантия на все виды работ. Запись онлайн.",
+    keywords:
+      "сто кемерово, автосервис кемерово, ремонт автомобилей кемерово, диагностика кемерово, то кемерово, ремонт двигателя кемерово, ремонт подвески кемерово, сварочные работы кемерово, автоэлектрика кемерово",
+    authors: [{ name: "АвтоТехЦентр Кемерово" }],
+    publisher: "АвтоТехЦентр",
+    formatDetection: {
+      telephone: true,
+      email: false,
+      address: true,
+    },
+    openGraph: {
+      title: "СТО Кемерово | Автосервис и ремонт автомобилей",
+      description:
+        "Профессиональный автосервис в Кемерово. Качественный ремонт и обслуживание автомобилей. Гарантия на работы.",
+      url: "https://garage-42.ru",
+      siteName: "АвтоТехЦентр Кемерово",
+      locale: "ru_RU",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "СТО Кемерово | Автосервис и ремонт автомобилей",
+      description:
+        "Профессиональный автосервис в Кемерово. Качественный ремонт и обслуживание автомобилей.",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    alternates: {
+      canonical: "https://garage-42.ru",
+    },
+  };
+}
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div>
+      <Hero />
+      <UnderHero />
+      <Services />
+      <How />
+      <Faq />
+      <Rewievs />
     </div>
   );
 }

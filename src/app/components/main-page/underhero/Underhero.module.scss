@@ -1,0 +1,114 @@
+.underhero_section {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 50px;
+  padding: 0 20px;
+  gap: 30px;
+
+  @media (max-width: 1024px) {
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    margin-top: 30px;
+    gap: 20px;
+  }
+}
+
+.underhero_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 16px 20px;
+    background: rgba(238, 18, 42, 0.03);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(238, 18, 42, 0.06);
+      transform: translateY(-2px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 14px 16px;
+    gap: 15px;
+  }
+
+  img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+
+    @media (max-width: 768px) {
+      width: 40px;
+      height: 40px;
+    }
+
+    @media (max-width: 480px) {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  span {
+    font-size: 18px;
+    color: #333;
+    line-height: 1.5;
+    font-weight: 400;
+
+    @media (max-width: 1024px) {
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+      flex: 1;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 16px;
+    }
+  }
+}
+
+// Альтернативный вариант с grid для лучшего контроля
+@media (max-width: 768px) {
+  .underhero_section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 30px;
+  }
+
+  .underhero_container {
+    margin: 0;
+  }
+}
+
+// Для очень маленьких экранов
+@media (max-width: 360px) {
+  .underhero_container {
+    flex-direction: column;
+    text-align: center;
+
+    img {
+      margin-bottom: 8px;
+    }
+
+    span {
+      text-align: center;
+    }
+  }
+}
