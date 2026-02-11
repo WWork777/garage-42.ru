@@ -76,10 +76,10 @@ export default function Header() {
         </div>
 
         <div>
-          <Link href="tel:+79234807070" className={module.phone}>
-            +7 (923) 480-70-70
+          <Link href="tel:+79235670063" className={module.phone}>
+            +7 (923) 567-00-63
           </Link>
-          <span className={module.time}>Пн-Сб: 09:00 - 21:00</span>
+          <span className={module.time}>Пн-Сб: 10:00 - 20:00</span>
         </div>
       </div>
 
@@ -108,10 +108,10 @@ export default function Header() {
         </div>
 
         <div className={module.mobile_contacts}>
-          <a href="tel:+79234807070" className={module.phone}>
-            +7 (923) 480-70-70
-          </a>
-          <span className={module.time}>Пн-Сб: 09:00 - 21:00</span>
+          <Link href="tel:+79235670063" className={module.phone}>
+            +7 (923) 567-00-63
+          </Link>
+          <span className={module.time}>Пн-Сб: 10:00 - 20:00</span>
         </div>
 
         <div className={module.mobile_socials}>

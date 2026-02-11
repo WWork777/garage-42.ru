@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Footer from "./components/layout/footer/Footer";
 import Header from "./components/layout/header/Header";
+import FloatingSocialButton from "./components/layout/button/FloatingSocialButton";
 
 const geistSans = localFont({
   src: [
@@ -48,6 +49,7 @@ export default function RootLayout({ children }) {
       <body className={geistSans.variable}>
         <Header />
         {children}
+        <FloatingSocialButton />
         <Footer />
 
         <noscript>
