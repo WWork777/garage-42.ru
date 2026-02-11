@@ -12,10 +12,6 @@ function MoreModal({ isOpen, onClose, service }) {
         className={module.services_modal_content}
         onClick={(e) => e.stopPropagation()}
       >
-        <button className={module.services_modal_close} onClick={onClose}>
-          ×
-        </button>
-
         <div className={module.services_modal_image}>
           <img src={service.image} alt={service.title} />
         </div>
@@ -47,6 +43,13 @@ function MoreModal({ isOpen, onClose, service }) {
               виды работ.
             </p>
           </div>
+
+          <button
+            className={module.services_modal_close_button}
+            onClick={onClose}
+          >
+            Закрыть
+          </button>
         </div>
       </div>
     </div>
