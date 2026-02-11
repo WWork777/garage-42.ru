@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Footer from "./components/layout/footer/Footer";
 import Header from "./components/layout/header/Header";
+import YandexMetrika from "./components/YandexMetrika/YandexMetrika";
 
 const geistSans = localFont({
   src: [
@@ -22,9 +23,12 @@ const geistSans = localFont({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Header />
-      <body className={`${geistSans.variable}`}>{children}</body>
-      <Footer />
+      <body className={`${geistSans.variable}`}>
+        <Header />
+        {children}
+        <Footer />
+        <YandexMetrika />
+      </body>
     </html>
   );
 }
