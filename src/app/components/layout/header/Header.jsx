@@ -50,8 +50,8 @@ export default function Header() {
           <Link href="#reviews" onClick={closeMenu}>
             Отзывы
           </Link>
-          <Link href="#contacts" onClick={closeMenu}>
-            Контакты
+          <Link href="#faq" onClick={closeMenu}>
+            Ответы на вопросы
           </Link>
         </div>
 
@@ -102,8 +102,8 @@ export default function Header() {
           <Link href="#reviews" onClick={closeMenu}>
             Отзывы
           </Link>
-          <Link href="#contacts" onClick={closeMenu}>
-            Контакты
+          <Link href="#faq" onClick={closeMenu}>
+            Ответы на вопросы
           </Link>
         </div>
 

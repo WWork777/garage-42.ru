@@ -7,7 +7,11 @@ function MoreModal({ isOpen, onClose, service }) {
   if (!isOpen || !service) return null;
 
   return (
-    <div className={module.services_modal_overlay} onClick={onClose}>
+    <div
+      className={module.services_modal_overlay}
+      onClick={onClose}
+      id="services"
+    >
       <div
         className={module.services_modal_content}
         onClick={(e) => e.stopPropagation()}
@@ -322,7 +326,7 @@ export default function Services() {
   };
 
   return (
-    <section className={module.services_section}>
+    <section className={module.services_section} id="services">
       <div className={module.services_container__top}>
         <h2>НАШИ УСЛУГИ</h2>
         <div className={module.services_container__top__line}>

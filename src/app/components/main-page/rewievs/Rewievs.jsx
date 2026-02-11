@@ -79,7 +79,7 @@ export default function Rewievs() {
     }
   }, [swiperInstance]);
   return (
-    <section className={module.rewievs_section}>
+    <section className={module.rewievs_section} id="reviews">
       <div className={module.rewievs_container__top}>
         <h2>О НАС ГОВОРЯТ</h2>
         <div className={module.rewievs_container__top__yandex}>

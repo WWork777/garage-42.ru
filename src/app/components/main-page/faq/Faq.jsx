@@ -51,7 +51,7 @@ export default function Faq() {
     setActiveIndex(activeIndex === index ? null : index);
   };
   return (
-    <section className={module.faq_section}>
+    <section className={module.faq_section} id="faq">
       <div className={module.faq_container__top}>
         <h2>ОТВЕТЫ НА ЧАСТЫЕ ВОПРОСЫ</h2>
         <div className={module.faq_container__top__line}>

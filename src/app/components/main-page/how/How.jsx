@@ -2,7 +2,7 @@ import module from "./How.module.scss";
 
 export default function How() {
   return (
-    <section className={module.how_section}>
+    <section className={module.how_section} id="how">
       <div className={module.how_container__top}>
         <h2>КАК МЫ РАБОТАЕМ</h2>
         <div className={module.how_container__top__line}>
