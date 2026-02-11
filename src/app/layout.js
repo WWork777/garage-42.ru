@@ -23,11 +23,13 @@ const geistSans = localFont({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <YandexMetrika />
+      </head>
       <body className={`${geistSans.variable}`}>
         <Header />
         {children}
         <Footer />
-        <YandexMetrika />
       </body>
     </html>
   );
