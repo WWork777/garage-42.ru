@@ -13,7 +13,7 @@ export default function Hero() {
           </span>
         </div>
 
-        <h1 className={module.title}>РЕМОНТ И ОБСЛУЖИВАНИЕ АВТОМОБИЛЕЙ</h1>
+        <h1 className={module.title}>Автосервис в кемерово</h1>
         <p>
           Диагностика, ТО и ремонт. Согласуем работы и стоимость до начала — без
           сюрпризов.
