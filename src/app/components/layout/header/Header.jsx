@@ -38,7 +38,7 @@ export default function Header() {
   return (
     <>
       <div className={`${module.header} ${scrolled ? module.scrolled : ""}`}>
-        <img src="/svg/logo/logo.svg" alt="Logo" />
+        <img src="/svg/logo/garagelogo.svg" alt="Logo" />
 
         <div className={module.nav}>
           <Link href="#services" onClick={closeMenu}>
