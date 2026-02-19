@@ -79,6 +79,9 @@ export default function Header() {
           <Link href="tel:+79235670063" className={module.phone}>
             +7 (923) 567-00-63
           </Link>
+          <Link href="tel:+73842670063" className={module.phone}>
+            +7 (384) 267-00-63
+          </Link>
           <span className={module.time}>Пн-Сб: 10:00 - 20:00</span>
         </div>
       </div>
@@ -86,7 +89,7 @@ export default function Header() {
       <div className={`${module.mobile_menu} ${menuOpen ? module.active : ""}`}>
         {/* Логотип в меню */}
         <div className={module.mobile_logo}>
-          <img src="/svg/logo/logo.svg" alt="Logo" />
+          <img src="/svg/logo/garagelogo.svg" alt="Logo" />
         </div>
 
         {/* Крестик для закрытия */}
@@ -110,6 +113,9 @@ export default function Header() {
         <div className={module.mobile_contacts}>
           <Link href="tel:+79235670063" className={module.phone}>
             +7 (923) 567-00-63
+          </Link>
+          <Link href="tel:+73842670063" className={module.phone}>
+            +7 (384) 267-00-63
           </Link>
           <span className={module.time}>Пн-Сб: 10:00 - 20:00</span>
         </div>

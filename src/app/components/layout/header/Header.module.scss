@@ -420,7 +420,7 @@
     }
 
     @media (max-width: 480px) {
-      margin-top: 40px;
+      margin-top: 20px;
       gap: 25px;
     }
 
@@ -476,7 +476,7 @@
       transition: color 0.2s ease;
 
       @media (max-width: 480px) {
-        font-size: 22px;
+        font-size: 18px;
       }
 
       &:hover {
