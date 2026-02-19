@@ -1,7 +1,6 @@
 "use client";
 import module from "./Services.module.scss";
-import { useState } from "react";
-
+import { useState, useRef } from "react";
 // Модальное окно "Подробнее"
 function MoreModal({ isOpen, onClose, service }) {
   if (!isOpen || !service) return null;
@@ -330,7 +329,7 @@ const allServices = [
     title: "Ремонт трансмиссии",
     time: "2-5 часов",
     image: "/images/services/Ремонт трансмиссии.webp",
-    price: "от 2 000",
+    price: "от 7 000",
     garanty: "12 мес",
     fullDescription:
       "Ремонт механических и автоматических коробок передач, вариаторов, редукторов, раздаточных коробок. Диагностика, замена масла, ремонт гидроблоков, замена фрикционов, соленоидов, гидротрансформаторов. Компьютерная адаптация АКПП после ремонта. Работаем с любыми типами трансмиссий отечественных и импортных авто.",
@@ -357,7 +356,7 @@ const allServices = [
     title: "Эндоскопия двигателя",
     time: "от 30 мин",
     image: "/images/services/Эндоскопия двигателя.jpg",
-    price: "от 1 500",
+    price: "от 3 000",
     garanty: "—",
     fullDescription:
       "Визуальная диагностика внутренних полостей двигателя без разбора с помощью промышленного эндоскопа. Позволяет оценить состояние цилиндров, поршней, клапанов и стенок ГБЦ. Выявляем нагар, задиры, прогар клапанов и наличие посторонних предметов.",
@@ -423,9 +422,23 @@ export default function Services() {
   const [moreModalOpen, setMoreModalOpen] = useState(false);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
-
+  const servicesSectionRef = useRef(null);
   // Показываем первые 6 или все услуги
   const displayedServices = showAll ? allServices : allServices.slice(0, 6);
+
+  const toggleServices = () => {
+    if (showAll) {
+      // Если сейчас показываются все услуги и мы их скрываем
+      setShowAll(false);
+      // Прокручиваем к началу секции
+      servicesSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    } else {
+      setShowAll(true);
+    }
+  };
 
   const handleMoreClick = (service) => {
     setSelectedService(service);
@@ -448,7 +461,11 @@ export default function Services() {
   };
 
   return (
-    <section className={module.services_section} id="services">
+    <section
+      className={module.services_section}
+      id="services"
+      ref={servicesSectionRef}
+    >
       <div className={module.services_container__top}>
         <h2>НАШИ УСЛУГИ</h2>
         <div className={module.services_container__top__line}>
@@ -472,7 +489,7 @@ export default function Services() {
 
       <button
         className={module.services_container__button}
-        onClick={() => setShowAll(!showAll)}
+        onClick={toggleServices}
       >
         {showAll ? "Скрыть" : "Посмотреть все услуги"}
       </button>
