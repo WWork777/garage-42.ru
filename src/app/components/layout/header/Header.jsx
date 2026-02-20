@@ -53,6 +53,9 @@ export default function Header() {
           <Link href="#faq" onClick={closeMenu}>
             Ответы на вопросы
           </Link>
+          {/* <Link href="tel:+79235670063" onClick={closeMenu}>
+            Вызвать эвакуатор
+          </Link> */}
         </div>
 
         <div>
@@ -65,6 +68,13 @@ export default function Header() {
           <Link href="https://t.me/avtohelp142" target="_blank">
             <img src="/svg/socials/tg.svg" alt="Telegram" />
           </Link>
+          {/* <Link
+            href="tel:+79235670063"
+            style={{ marginRight: "10px" }}
+            className={module.evacuation_link}
+          >
+            Вызвать эвакуатор
+          </Link> */}
           <div
             className={`${module.burger} ${menuOpen ? module.active : ""}`}
             onClick={toggleMenu}
