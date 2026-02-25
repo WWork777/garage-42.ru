@@ -276,7 +276,7 @@ function BookingModal({ isOpen, onClose, serviceTitle }) {
                     />
                     <span>
                       Я соглашаюсь на обработку персональных данных и с{" "}
-                      <a href="/privacy" target="_blank">
+                      <a href="/privacy-policy.pdf" target="_blank">
                         политикой конфиденциальности
                       </a>
                     </span>
