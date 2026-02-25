@@ -237,7 +237,7 @@ export default function Footer() {
 
         <div className={module.links}>
           <Link href="/cookie-policy.pdf" target="_blank">
-            Политики обработки данных
+            Политика обработки данных
           </Link>
           <Link href="/privacy-policy.pdf" target="_blank">
             Политика конфиденциальности
