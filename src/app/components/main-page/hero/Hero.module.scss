@@ -100,178 +100,6 @@
   border-bottom-right-radius: 120px;
   overflow: hidden;
   padding: 60px 20px;
-
-  // Анимация фона при загрузке
-  // animation: fadeInScale 1.2s ease-out;
-
-  form {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 25px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-
-    // Анимация для каждого элемента формы
-    .input_group {
-      animation: fadeInUp 0.8s ease-out;
-      animation-fill-mode: both;
-
-      @for $i from 1 through 3 {
-        &:nth-child(#{$i}) {
-          animation-delay: 0.6s + ($i * 0.15s);
-        }
-      }
-    }
-
-    button {
-      animation: fadeInUp 0.8s ease-out;
-      animation-delay: 1.1s;
-      animation-fill-mode: both;
-    }
-
-    @media (max-width: 1024px) {
-      justify-content: center;
-    }
-
-    @media (max-width: 768px) {
-      flex-direction: column;
-      align-items: stretch;
-
-      gap: 20px;
-    }
-
-    label {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-left: 15px;
-      position: relative;
-      display: inline-block;
-
-      &::after {
-        content: "";
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: #ee122a;
-        transition: width 0.3s ease;
-      }
-
-      &:hover::after {
-        width: 100%;
-      }
-    }
-
-    input,
-    select {
-      padding: 18px 30px;
-      border-radius: 50px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-      color: white;
-      font-size: 15px;
-      min-width: 220px;
-      transition: all 0.3s ease;
-      outline: none;
-
-      // Анимация при фокусе
-      &:focus {
-        border-color: #ee122a;
-        box-shadow:
-          0 0 0 3px rgba(238, 18, 42, 0.2),
-          0 0 20px rgba(238, 18, 42, 0.2);
-        background: rgba(255, 255, 255, 0.12);
-        transform: scale(1.02);
-      }
-
-      &:hover {
-        border-color: rgba(255, 255, 255, 0.6);
-        background: rgba(255, 255, 255, 0.1);
-      }
-
-      &::placeholder {
-        color: rgba(255, 255, 255, 0.5);
-        font-weight: 300;
-        transition: opacity 0.3s ease;
-      }
-
-      &:focus::placeholder {
-        opacity: 0.7;
-      }
-    }
-
-    select {
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 25px center;
-      background-size: 16px;
-      padding-right: 50px;
-      cursor: pointer;
-
-      option {
-        background-color: #1a1a1a;
-        color: white;
-      }
-    }
-
-    button {
-      padding: 18px 44px;
-      border-radius: 50px;
-      background: linear-gradient(135deg, #ee122a 0%, #ff2a42 100%);
-      color: white;
-      border: none;
-      font-size: 16px;
-      font-weight: 400;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      letter-spacing: 0.5px;
-      box-shadow: 0 10px 20px rgba(238, 18, 42, 0.2);
-      position: relative;
-      overflow: hidden;
-
-      // Shimmer эффект при загрузке
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
-        animation: shimmer 3s infinite;
-        animation-delay: 1.5s;
-      }
-
-      @media (max-width: 768px) {
-        width: 100%;
-        padding: 16px 30px;
-      }
-
-      &:hover {
-        background: linear-gradient(135deg, #ff2a42 0%, #ff4459 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 15px 30px rgba(238, 18, 42, 0.4);
-      }
-
-      &:active {
-        transform: translateY(0);
-      }
-    }
-  }
 }
 
 .overlay {
@@ -286,8 +114,6 @@
   z-index: 1;
   border-bottom-left-radius: 120px;
   border-bottom-right-radius: 120px;
-  // Плавное появление overlay
-  // animation: fadeInScale 1s ease-out;
 }
 
 .content {
@@ -302,7 +128,6 @@
   gap: 50px;
   margin-top: 30px;
 
-  // Анимация для каждого элемента контента
   > * {
     animation: slideInBlur 0.8s ease-out;
     animation-fill-mode: both;
@@ -319,8 +144,6 @@
     animation: fadeInRight 0.8s ease-out;
     animation-delay: 0.2s;
     animation-fill-mode: both;
-
-    // Анимация градиента текста
     background: linear-gradient(90deg, #fff, #f0f0f0, #fff, #f0f0f0);
     background-size: 300% 100%;
     -webkit-background-clip: text;
@@ -345,8 +168,6 @@
     margin: 0;
     letter-spacing: -0.5px;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-
-    // Эффект свечения при наведении
     transition: text-shadow 0.3s ease;
 
     &:hover {
@@ -373,7 +194,6 @@
     position: relative;
     display: inline-block;
 
-    // Подчеркивание при наведении
     &::after {
       content: "";
       position: absolute;
@@ -415,7 +235,6 @@
   position: relative;
   overflow: hidden;
 
-  // Shimmer эффект при загрузке
   &::before {
     content: "";
     position: absolute;
@@ -454,38 +273,30 @@
   }
 }
 
-.main_title {
-
-  font-size: 78px;
-  line-height: 1.2;
-  font-weight: 400;
-  display: block;
-  margin-bottom: 20px;
-  background: linear-gradient(90deg, #fff 0%, #f0f0f0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation:
-    slideInBlur 0.8s ease-out,
-    gradientShift 8s ease infinite;
-  animation-delay: 0.2s, 0.8s;
-
-  @media (max-width: 768px) {
-    font-size: 48px;
-  }
+// Стили формы
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
 }
 
-.subtitle {
-  font-size: 18px;
-  line-height: 1.6;
-  opacity: 0.95;
-  max-width: 600px;
-  margin: 0 auto;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.95);
-  animation: fadeInUp 0.8s ease-out;
-  animation-delay: 0.4s;
-  animation-fill-mode: both;
+.form_row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  flex-wrap: wrap;
+
+  @media (max-width: 1024px) {
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
 }
 
 .input_group {
@@ -494,24 +305,252 @@
   gap: 12px;
   align-items: flex-start;
   flex: 1;
+  min-width: 200px;
 
-  // Эффект при фокусе внутри группы
-  &:focus-within {
-    label {
-      // color: #ee122a;
+  label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-left: 15px;
+    position: relative;
+    display: inline-block;
 
-      // &::after {
-      //   width: 100%;
-      // }
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #ee122a;
+      transition: width 0.3s ease;
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+  }
+
+  input {
+    padding: 18px 30px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 15px;
+    min-width: 220px;
+    width: 100%;
+    transition: all 0.3s ease;
+    outline: none;
+
+    &:focus {
+      border-color: #ee122a;
+      box-shadow:
+        0 0 0 3px rgba(238, 18, 42, 0.2),
+        0 0 20px rgba(238, 18, 42, 0.2);
+      background: rgba(255, 255, 255, 0.12);
+      transform: scale(1.02);
+    }
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 300;
+      transition: opacity 0.3s ease;
+    }
+
+    &:focus::placeholder {
+      opacity: 0.7;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      &:hover {
+        border-color: rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.08);
+      }
     }
   }
 
   @media (max-width: 768px) {
     width: 100%;
+
+    input {
+      width: 100%;
+    }
   }
 }
 
-// Дополнительные декоративные элементы
+// Стили для кнопки в ряду
+.form_row button {
+  padding: 18px 44px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #ee122a 0%, #ff2a42 100%);
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  box-shadow: 0 10px 20px rgba(238, 18, 42, 0.2);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease-out;
+  animation-delay: 1.1s;
+  animation-fill-mode: both;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    animation: shimmer 3s infinite;
+    animation-delay: 1.5s;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+
+    &::before {
+      animation: none;
+    }
+
+    &:hover {
+      transform: none;
+      box-shadow: 0 10px 20px rgba(238, 18, 42, 0.2);
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 16px 30px;
+  }
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #ff2a42 0%, #ff4459 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(238, 18, 42, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+.checkbox_group {
+  width: 100%;
+  display: flex;
+  margin-top: 10px;
+  justify-content: center;
+
+  @media (min-width: 1025px) {
+    padding-left: 0;
+  }
+}
+
+.checkbox_label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  text-align: left;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #ee122a;
+    margin: 0;
+    flex-shrink: 0;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    line-height: 1.4;
+  }
+
+  a {
+    color: #ee122a;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+  }
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    gap: 8px;
+
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+    }
+
+    a {
+      white-space: normal;
+    }
+  }
+}
+
+.message {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  text-align: center;
+  animation: fadeInUp 0.5s ease-out;
+
+  &.success {
+    background: rgba(46, 204, 113, 0.2);
+    border: 1px solid rgba(46, 204, 113, 0.5);
+    color: #fff;
+  }
+
+  &.error {
+    background: rgba(238, 18, 42, 0.2);
+    border: 1px solid rgba(238, 18, 42, 0.5);
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    padding: 10px 15px;
+  }
+}
+
+// Декоративный элемент
 .hero::after {
   content: "";
   position: absolute;
@@ -576,11 +615,6 @@
         margin-left: 0;
       }
     }
-
-    input,
-    select {
-      width: 100%;
-    }
   }
 
   .overlay {
@@ -602,18 +636,16 @@
   .hero {
     .content {
       gap: 20px;
+
       h1 {
         font-size: 20px;
       }
+
       p {
         font-size: 12px;
       }
-      input,
-      select {
-        padding: 10px 10px;
-        font-size: 14px;
-      }
     }
+
     .count {
       padding: 10px 20px;
       font-size: 18px;
@@ -623,5 +655,10 @@
         font-size: 12px;
       }
     }
+  }
+
+  .input_group input {
+    padding: 14px 20px;
+    font-size: 14px;
   }
 }

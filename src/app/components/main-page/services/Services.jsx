@@ -1,6 +1,7 @@
 "use client";
 import module from "./Services.module.scss";
 import { useState, useRef } from "react";
+
 // Модальное окно "Подробнее"
 function MoreModal({ isOpen, onClose, service }) {
   if (!isOpen || !service) return null;
@@ -35,10 +36,6 @@ function MoreModal({ isOpen, onClose, service }) {
                   : `${service.price} ₽`}
               </p>
             </div>
-            {/* <div className={module.services_modal_info_item}>
-              <span>Гарантия</span>
-              <p>{service.garanty}</p>
-            </div> */}
           </div>
 
           <div className={module.services_modal_description}>
@@ -60,23 +57,160 @@ function MoreModal({ isOpen, onClose, service }) {
 
 // Модальное окно "Записаться"
 function BookingModal({ isOpen, onClose, serviceTitle }) {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    agreement: false,
+  });
+
+  const [status, setStatus] = useState({
+    loading: false,
+    success: false,
+    error: false,
+    message: "",
+  });
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  // Маска для телефона
+  const handlePhoneChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // Удаляем все нецифровые символы
+
+    // Применяем маску +7 (___) ___-__-__
+    if (value.length > 0) {
+      if (value.length === 1) {
+        value = `+7 (${value}`;
+      } else if (value.length <= 4) {
+        value = `+7 (${value.slice(1, 4)}`;
+      } else if (value.length <= 7) {
+        value = `+7 (${value.slice(1, 4)}) ${value.slice(4, 7)}`;
+      } else if (value.length <= 9) {
+        value = `+7 (${value.slice(1, 4)}) ${value.slice(4, 7)}-${value.slice(7, 9)}`;
+      } else {
+        value = `+7 (${value.slice(1, 4)}) ${value.slice(4, 7)}-${value.slice(7, 9)}-${value.slice(9, 11)}`;
+      }
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      phone: value,
+    }));
+  };
+
+  // Обработчик клавиш для телефона
+  const handlePhoneKeyDown = (e) => {
+    if (
+      e.key === "Backspace" ||
+      e.key === "Delete" ||
+      e.key === "Tab" ||
+      e.key === "Escape" ||
+      e.key === "Enter" ||
+      e.key === "ArrowLeft" ||
+      e.key === "ArrowRight" ||
+      e.key === "ArrowUp" ||
+      e.key === "ArrowDown" ||
+      e.key === "Home" ||
+      e.key === "End"
+    ) {
+      return;
+    }
+
+    if (!/^\d$/.test(e.key) && e.key !== "+") {
+      e.preventDefault();
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Здесь можно добавить отправку данных на сервер
-    console.log({ name, phone, service: serviceTitle });
-    setSubmitted(true);
+
+    if (!formData.agreement) {
+      setStatus({
+        loading: false,
+        success: false,
+        error: true,
+        message: "Необходимо согласие с политикой обработки данных",
+      });
+      return;
+    }
+
+    if (!formData.name || !formData.phone) {
+      setStatus({
+        loading: false,
+        success: false,
+        error: true,
+        message: "Пожалуйста, заполните все обязательные поля",
+      });
+      return;
+    }
+
+    // Очищаем телефон от скобок и тире для отправки
+    const cleanPhone = formData.phone.replace(/[^\d+]/g, "");
+
+    setStatus({ loading: true, success: false, error: false, message: "" });
+
+    try {
+      const response = await fetch("/api/send-to-telegram", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          service: serviceTitle,
+          name: formData.name,
+          phone: cleanPhone,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Ошибка при отправке");
+      }
+
+      setStatus({
+        loading: false,
+        success: true,
+        error: false,
+        message:
+          "Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.",
+      });
+
+      // Очищаем форму
+      setFormData({
+        name: "",
+        phone: "",
+        agreement: false,
+      });
+    } catch (error) {
+      setStatus({
+        loading: false,
+        success: false,
+        error: true,
+        message: "Произошла ошибка при отправке. Попробуйте позже.",
+      });
+    }
   };
 
   const handleClose = () => {
-    setName("");
-    setPhone("");
-    setSubmitted(false);
+    setFormData({
+      name: "",
+      phone: "",
+      agreement: false,
+    });
+    setStatus({
+      loading: false,
+      success: false,
+      error: false,
+      message: "",
+    });
     onClose();
   };
 
@@ -91,7 +225,7 @@ function BookingModal({ isOpen, onClose, serviceTitle }) {
         </button>
 
         <div className={module.services_modal_body}>
-          {!submitted ? (
+          {!status.success ? (
             <>
               <h3>Записаться на услугу</h3>
               <div className={module.services_service_name}>{serviceTitle}</div>
@@ -105,9 +239,11 @@ function BookingModal({ isOpen, onClose, serviceTitle }) {
                   <input
                     type="text"
                     id="name"
+                    name="name"
                     placeholder="Введите ваше имя"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={formData.name}
+                    onChange={handleChange}
+                    disabled={status.loading}
                     required
                   />
                 </div>
@@ -117,24 +253,57 @@ function BookingModal({ isOpen, onClose, serviceTitle }) {
                   <input
                     type="tel"
                     id="phone"
+                    name="phone"
                     placeholder="+7 (___) ___-__-__"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    value={formData.phone}
+                    onChange={handlePhoneChange}
+                    onKeyDown={handlePhoneKeyDown}
+                    disabled={status.loading}
+                    maxLength="18"
                     required
                   />
                 </div>
+
+                <div className={module.services_checkbox_group}>
+                  <label className={module.services_checkbox_label}>
+                    <input
+                      type="checkbox"
+                      name="agreement"
+                      checked={formData.agreement}
+                      onChange={handleChange}
+                      disabled={status.loading}
+                      required
+                    />
+                    <span>
+                      Я соглашаюсь на обработку персональных данных и с{" "}
+                      <a href="/privacy" target="_blank">
+                        политикой конфиденциальности
+                      </a>
+                    </span>
+                  </label>
+                </div>
+
+                {status.message && (
+                  <div
+                    className={`${module.services_message} ${status.error ? module.error : ""}`}
+                  >
+                    {status.message}
+                  </div>
+                )}
 
                 <div className={module.services_booking_actions}>
                   <button
                     type="submit"
                     className={module.services_booking_submit}
+                    disabled={status.loading}
                   >
-                    Отправить заявку
+                    {status.loading ? "Отправка..." : "Отправить заявку"}
                   </button>
                   <button
                     type="button"
                     className={module.services_booking_cancel}
                     onClick={handleClose}
+                    disabled={status.loading}
                   >
                     Отмена
                   </button>
@@ -145,7 +314,7 @@ function BookingModal({ isOpen, onClose, serviceTitle }) {
             <div className={module.services_success_message}>
               <div className={module.services_success_icon}>✓</div>
               <h4>Спасибо за заявку!</h4>
-              <p>Мы свяжемся с вами в ближайшее время</p>
+              <p>{status.message}</p>
               <button onClick={handleClose}>Закрыть</button>
             </div>
           )}
@@ -179,11 +348,9 @@ function ServicesCard({
         <div className={module.services_card__info__price}>
           <span>Стоимость</span>
           <p>
-            {
-              typeof price === "string" && price.includes("/")
-                ? price // Если есть слеш (например, "20 руб./шип"), показываем как есть
-                : `${price} ₽` // Иначе добавляем значок рубля
-            }
+            {typeof price === "string" && price.includes("/")
+              ? price
+              : `${price} ₽`}
           </p>
         </div>
       </div>
@@ -316,15 +483,6 @@ const allServices = [
     fullDescription:
       "Комплексная диагностика и ремонт ходовой части автомобиля. Замена шаровых опор, сайлентблоков, стоек и втулок стабилизатора, амортизаторов, пружин. Восстановление геометрии подвески. Использование гидравлических прессов для запрессовки сайлентблоков. После ремонта обязательная регулировка углов установки колес.",
   },
-  // {
-  //   title: "Ремонт ДВС",
-  //   time: "от 4 часов",
-  //   image: "/images/services/Ремонт ДВС.webp",
-  //   price: "от 1 000",
-  //   garanty: "12 мес",
-  //   fullDescription:
-  //     "Узловой ремонт двигателя без полной разборки. Замена прокладок и сальников, ремонт системы вентиляции картера, замена ремней и цепей ГРМ, помпы, термостата. Диагностика и устранение посторонних шумов, вибраций, масложора, падения мощности. Подбор оптимального решения: ремонт или замена на контрактный двигатель.",
-  // },
   {
     title: "Ремонт трансмиссии",
     time: "2-5 часов",
@@ -334,15 +492,6 @@ const allServices = [
     fullDescription:
       "Ремонт механических и автоматических коробок передач, вариаторов, редукторов, раздаточных коробок. Диагностика, замена масла, ремонт гидроблоков, замена фрикционов, соленоидов, гидротрансформаторов. Компьютерная адаптация АКПП после ремонта. Работаем с любыми типами трансмиссий отечественных и импортных авто.",
   },
-  // {
-  //   title: "Рулевое управление",
-  //   time: "1-3 часа",
-  //   image: "/images/services/Рулевое управление.webp",
-  //   price: "от 800",
-  //   garanty: "6 мес",
-  //   fullDescription:
-  //     "Ремонт и обслуживание рулевого управления. Диагностика люфтов, замена наконечников, тяг, реек, усилителей. Регулировка зазоров, восстановление шлицевых соединений. Замена масла в ГУР, ремонт насоса гидроусилителя. Ремонт электроусилителя руля. Обязательная регулировка углов установки колес после ремонта.",
-  // },
   {
     title: "Шиномонтаж комплекс",
     time: "1-2 часа",
@@ -423,14 +572,12 @@ export default function Services() {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const servicesSectionRef = useRef(null);
-  // Показываем первые 6 или все услуги
+
   const displayedServices = showAll ? allServices : allServices.slice(0, 6);
 
   const toggleServices = () => {
     if (showAll) {
-      // Если сейчас показываются все услуги и мы их скрываем
       setShowAll(false);
-      // Прокручиваем к началу секции
       servicesSectionRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -494,7 +641,6 @@ export default function Services() {
         {showAll ? "Скрыть" : "Посмотреть все услуги"}
       </button>
 
-      {/* Модальные окна */}
       <MoreModal
         isOpen={moreModalOpen}
         onClose={closeMoreModal}
