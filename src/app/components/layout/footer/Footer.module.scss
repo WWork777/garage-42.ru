@@ -264,6 +264,7 @@
   @media (max-width: 768px) {
     gap: 30px;
     margin-right: 0;
+    flex-direction: column;
   }
 }
 
@@ -444,5 +445,123 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+// Блок о разработчике
+.developerBlock {
+  width: 100%;
+  padding: 20px 40px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+    margin-bottom: 75px;
+  }
+}
+
+.developerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+}
+
+.developerLabel {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
+}
+
+.developerLink {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50px;
+  backdrop-filter: blur(5px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+
+    .developerName {
+      color: #ee122a;
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+    padding: 8px 12px;
+  }
+}
+
+// .developerLogoWrapper {
+//   background: rgba(255, 255, 255, 0.1);
+//   padding: 8px;
+//   border-radius: 50%;
+//   transition: all 0.3s ease;
+//   flex-shrink: 0;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+.developerLogo {
+  height: 30px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+
+  @media (min-width: 768px) {
+    height: 35px;
+  }
+}
+
+.developerInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.developerName {
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+
+  @media (min-width: 768px) {
+    font-size: 1.3rem;
+  }
+}
+
+.developerDescription {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+
+  @media (min-width: 768px) {
+    font-size: 0.85rem;
   }
 }

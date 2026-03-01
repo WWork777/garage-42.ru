@@ -246,16 +246,34 @@ export default function Footer() {
             Пользовательское соглашение
           </Link>
         </div>
+      </div>
 
-        <a
-          href="https://www.avito.ru/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={module.avito_link}
-        >
-          Мы на Авито
-          <img src="/svg/footer/avito.svg" alt="Авито" />
-        </a>
+      {/* Блок о разработчике */}
+      <div className={module.developerBlock}>
+        <div className={module.developerContent}>
+          <span className={module.developerLabel}>Разработка сайта</span>
+          <a
+            href="https://virlab42.ru"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={module.developerLink}
+            aria-label="Сайт разработчика"
+          >
+            <div className={module.developerLogoWrapper}>
+              <img
+                src="/site.png"
+                alt="Логотип разработчика"
+                className={module.developerLogo}
+              />
+            </div>
+            <div className={module.developerInfo}>
+              <span className={module.developerName}>Вирлаб</span>
+              <span className={module.developerDescription}>
+                Создание и продвижение сайтов
+              </span>
+            </div>
+          </a>
+        </div>
       </div>
     </footer>
   );
