@@ -1,27 +1,18 @@
 // next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 🔥 Не используем 'export' — нужен сервер для API-роутов
-  // output: 'export',  ← Эта строка должна быть ЗАКОММЕНТИРОВАНА или удалена!
-
-  // 🔥 Оптимизация изображений
+  // 🔥 Оптимизация изображений ВКЛЮЧЕНА
   images: {
-    unoptimized: false,        // ✅ Включаем оптимизацию (работает только с сервером)
-    formats: ['image/webp'],   // ✅ Конвертируем в WebP для скорости
+    unoptimized: false,
+    formats: ['image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,       // ✅ Кэширование оптимизированных картинок (в секундах)
+    minimumCacheTTL: 31536000, // Кэш на 1 год
   },
-
-  // 🔥 Компрессия для ускорения загрузки
+  
   compress: true,
-
-  // 🔥 Убираем лишние заголовки для безопасности
-  poweredByHeader: false,
-
-  // 🔥 Оптимизация сборки
   reactStrictMode: true,
-  swcMinify: true,
+  poweredByHeader: false,
 };
 
 export default nextConfig;
