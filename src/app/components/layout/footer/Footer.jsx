@@ -132,6 +132,11 @@ export default function Footer() {
         throw new Error(data.error || "Ошибка при отправке");
       }
 
+      // Отправляем цель в Яндекс.Метрику
+      if (typeof window !== "undefined" && window.ym) {
+        window.ym(106779785, "reachGoal", "foote_form");
+      }
+
       setStatus({
         loading: false,
         success: true,

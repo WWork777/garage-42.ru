@@ -97,6 +97,11 @@ export default function Hero() {
         throw new Error(data.error || "Ошибка при отправке");
       }
 
+      // Отправляем цель в Яндекс.Метрику
+      if (typeof window !== "undefined" && window.ym) {
+        window.ym(106779809, "reachGoal", "hero_form");
+      }
+
       setStatus({
         loading: false,
         success: true,
