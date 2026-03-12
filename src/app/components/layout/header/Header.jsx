@@ -1,24 +1,39 @@
 "use client";
 import module from "./Header.module.scss";
 import Link from "next/link";
+import { usePathname } from 'next/navigation';
 import { useState, useEffect } from "react";
 
 export default function Header() {
+  const pathname = usePathname(); // 🔥 Получаем текущий путь
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // 🔥 Обработка скролла + инициализация на основе пути
   useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 50;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
-    };
+    const isNotHome = pathname !== '/';
+    
+    if (isNotHome) {
+      // 🔥 На внутренних страницах хедер сразу в состоянии "scrolled"
+      setScrolled(true);
+    } else {
+      // 🔥 На главной — обычное поведение по скроллу
+      const handleScroll = () => {
+        const isScrolled = window.scrollY > 50;
+        if (isScrolled !== scrolled) {
+          setScrolled(isScrolled);
+        }
+      };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [scrolled]);
+      // Начальная проверка (если страница загружена уже со скроллом)
+      handleScroll();
 
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
+  }, [pathname, scrolled]); // 🔥 pathname в зависимостях
+
+  // 🔥 Блокировка скролла при открытом меню
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = "hidden";
@@ -27,6 +42,7 @@ export default function Header() {
     }
   }, [menuOpen]);
 
+  // 🔥 Открытие/закрытие меню
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -35,22 +51,23 @@ export default function Header() {
     setMenuOpen(false);
   };
 
+
   return (
     <>
       <div className={`${module.header} ${scrolled ? module.scrolled : ""}`}>
         <img src="/svg/logo/garagelogo.svg" alt="Logo" />
 
         <div className={module.nav}>
-          <Link href="#services" onClick={closeMenu}>
+          <Link href="/#services" onClick={closeMenu}>
             Услуги
           </Link>
-          <Link href="#how" onClick={closeMenu}>
+          <Link href="/#how" onClick={closeMenu}>
             Как работаем
           </Link>
-          <Link href="#reviews" onClick={closeMenu}>
+          <Link href="/#reviews" onClick={closeMenu}>
             Отзывы
           </Link>
-          <Link href="#faq" onClick={closeMenu}>
+          <Link href="/#faq" onClick={closeMenu}>
             Ответы на вопросы
           </Link>
           {/* <Link href="tel:+79235670063" onClick={closeMenu}>
@@ -106,16 +123,16 @@ export default function Header() {
         <div className={module.close_button} onClick={closeMenu}></div>
 
         <div className={module.mobile_nav}>
-          <Link href="#services" onClick={closeMenu}>
+          <Link href="/#services" onClick={closeMenu}>
             Услуги
           </Link>
-          <Link href="#how" onClick={closeMenu}>
+          <Link href="/#how" onClick={closeMenu}>
             Как работаем
           </Link>
-          <Link href="#reviews" onClick={closeMenu}>
+          <Link href="/#reviews" onClick={closeMenu}>
             Отзывы
           </Link>
-          <Link href="#faq" onClick={closeMenu}>
+          <Link href="/#faq" onClick={closeMenu}>
             Ответы на вопросы
           </Link>
         </div>

@@ -320,6 +320,27 @@
     transform: translateY(0);
   }
 }
+.link_more {
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-size: 16px;
+     
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+
+      @media (max-width: 1024px) {
+        padding: 12px 22px;
+        font-size: 15px;
+      }
+
+      @media (max-width: 768px) {
+        padding: 12px 20px;
+        font-size: 14px;
+      }
+    }
+
 
 // Touch устройства
 @media (hover: none) and (pointer: coarse) {
@@ -874,6 +895,7 @@
       transform: translateY(-2px);
     }
   }
+  
 }
 
 // Анимации для модальных окон
