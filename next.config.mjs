@@ -1,10 +1,17 @@
-// next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'export',  ← Не указывай это, если нужны API-роуты
-  images: {
-    unoptimized: false, // Можно оставить оптимизацию
-  },
+  /* config options here */
+  reactCompiler: true,
 };
 
 export default nextConfig;
+
+const nextConfig = {
+  output: 'export',  // 🔥 Создаёт статический сайт в папке out/
+  images: {
+    unoptimized: true, // 🔥 Обязательно для статического экспорта (отключает оптимизацию картинок)
+  },
+  trailingSlash: true, // 🔥 Добавляет слэш в конце URL (важно для nginx)
+};
+
+module.exports = nextConfig;
