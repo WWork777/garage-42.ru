@@ -1,21 +1,18 @@
 // app/services/[slug]/page.jsx
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
-// 🔥 ИСПРАВЛЕНО: относительный путь + явное расширение .js
 import { getServiceBySlug, getAllServiceSlugs } from '../data/services.data';
 import styles from './page.module.scss';
 
-// 🔥 Генерация статических параметров для всех услуг (SSG)
+// 🔥 Генерация статических параметров для всех услуг
 export async function generateStaticParams() {
   const services = getAllServiceSlugs();
   return services;
 }
 
 // 🔥 Генерация метаданных для SEO
-// ⚠️ В Next.js 15+ params — это Promise, нужно await!
 export async function generateMetadata({ params }) {
-  const { slug } = await params; // 🔥 Распаковываем Promise
+  const { slug } = await params;
   const service = getServiceBySlug(slug);
   
   if (!service) {
@@ -27,8 +24,6 @@ export async function generateMetadata({ params }) {
 
   const title = `${service.title} | Автопомощь 142 — автосервис в Кемерово`;
   const description = service.fullDescription.slice(0, 160) + '...';
-  const imageUrl = service.image;
-  // 🔥 ИСПРАВЛЕНО: убраны пробелы в конце URL
   const baseUrl = 'https://avtohelp142.ru';
   const url = `${baseUrl}/services/${slug}`;
 
@@ -49,7 +44,7 @@ export async function generateMetadata({ params }) {
       siteName: "Автопомощь 142 — автосервис в Кемерово",
       images: [
         {
-          url: `${baseUrl}${imageUrl}`,
+          url: `${baseUrl}${service.image}`,
           width: 1200,
           height: 630,
           alt: service.title,
@@ -62,7 +57,7 @@ export async function generateMetadata({ params }) {
       card: "summary_large_image",
       title,
       description,
-      images: [`${baseUrl}${imageUrl}`],
+      images: [`${baseUrl}${service.image}`],
     },
     alternates: {
       canonical: url,
@@ -70,16 +65,13 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// 🔥 Статическая генерация (опционально)
 export const dynamic = 'force-static';
 
 // 🔥 Основной компонент страницы
-// ⚠️ В Next.js 15+ params — это Promise, нужно await!
 export default async function ServicePage({ params }) {
-  const { slug } = await params; // 🔥 Распаковываем Promise
+  const { slug } = await params;
   const service = getServiceBySlug(slug);
   
-  // Если услуга не найдена — показываем 404
   if (!service) {
     notFound();
   }
@@ -100,13 +92,14 @@ export default async function ServicePage({ params }) {
           {/* Левая колонка — изображение */}
           <div className={styles.imageSection}>
             <div className={styles.imageWrapper}>
-              <Image
+              {/* 🔥 ЗАМЕНИЛИ <Image> НА <img> */}
+              <img
                 src={service.image}
                 alt={service.title}
-                width={600}
-                height={400}
+                width="600"
+                height="400"
                 className={styles.mainImage}
-                priority
+                loading="eager"  // 🔥 priority аналог для img
               />
             </div>
             
@@ -122,10 +115,10 @@ export default async function ServicePage({ params }) {
                   {service.price.includes('/') ? service.price : `${service.price} ₽`}
                 </span>
               </div>
-              {/* <div className={styles.infoItem}>
+              <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Гарантия:</span>
                 <span className={styles.infoValue}>{service.garanty}</span>
-              </div> */}
+              </div>
             </div>
           </div>
 
