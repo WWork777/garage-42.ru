@@ -5,19 +5,24 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from "react";
 
 export default function Header() {
-  const pathname = usePathname(); // 🔥 Получаем текущий путь
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // 🔥 Helper для вызова целей Яндекс.Метрики
+  const trackGoal = (goalName: string) => {
+    if (typeof window !== 'undefined' && typeof window.ym === 'function') {
+      window.ym(106779809, 'reachGoal', goalName);
+    }
+  };
 
   // 🔥 Обработка скролла + инициализация на основе пути
   useEffect(() => {
     const isNotHome = pathname !== '/';
     
     if (isNotHome) {
-      // 🔥 На внутренних страницах хедер сразу в состоянии "scrolled"
       setScrolled(true);
     } else {
-      // 🔥 На главной — обычное поведение по скроллу
       const handleScroll = () => {
         const isScrolled = window.scrollY > 50;
         if (isScrolled !== scrolled) {
@@ -25,13 +30,11 @@ export default function Header() {
         }
       };
 
-      // Начальная проверка (если страница загружена уже со скроллом)
       handleScroll();
-
       window.addEventListener("scroll", handleScroll, { passive: true });
       return () => window.removeEventListener("scroll", handleScroll);
     }
-  }, [pathname, scrolled]); // 🔥 pathname в зависимостях
+  }, [pathname, scrolled]);
 
   // 🔥 Блокировка скролла при открытом меню
   useEffect(() => {
@@ -42,15 +45,8 @@ export default function Header() {
     }
   }, [menuOpen]);
 
-  // 🔥 Открытие/закрытие меню
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
-
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <>
@@ -58,40 +54,31 @@ export default function Header() {
         <img src="/svg/logo/garagelogo.svg" alt="Logo" />
 
         <div className={module.nav}>
-          <Link href="/#services" onClick={closeMenu}>
-            Услуги
-          </Link>
-          <Link href="/#how" onClick={closeMenu}>
-            Как работаем
-          </Link>
-          <Link href="/#reviews" onClick={closeMenu}>
-            Отзывы
-          </Link>
-          <Link href="/#faq" onClick={closeMenu}>
-            Ответы на вопросы
-          </Link>
-          {/* <Link href="tel:+79235670063" onClick={closeMenu}>
-            Вызвать эвакуатор
-          </Link> */}
+          <Link href="/#services" onClick={closeMenu}>Услуги</Link>
+          <Link href="/#how" onClick={closeMenu}>Как работаем</Link>
+          <Link href="/#reviews" onClick={closeMenu}>Отзывы</Link>
+          <Link href="/#faq" onClick={closeMenu}>Ответы на вопросы</Link>
         </div>
 
         <div>
+          {/* 🔥 Max.ru с целью "max" */}
           <Link
             href="https://max.ru/u/f9LHodD0cOJKIJtCLzt9R39PdOR-MG1fi9sdMh9cEZzuXB-ca-EqbrqgtN4"
             target="_blank"
+            onClick={() => trackGoal('max')}
           >
             <img src="/svg/socials/max.svg" alt="Max" />
           </Link>
-          <Link href="https://t.me/avtohelp142" target="_blank">
+          
+          {/* 🔥 Telegram с целью "telegram" */}
+          <Link
+            href="https://t.me/avtohelp142"
+            target="_blank"
+            onClick={() => trackGoal('telegram')}
+          >
             <img src="/svg/socials/tg.svg" alt="Telegram" />
           </Link>
-          {/* <Link
-            href="tel:+79235670063"
-            style={{ marginRight: "10px" }}
-            className={module.evacuation_link}
-          >
-            Вызвать эвакуатор
-          </Link> */}
+          
           <div
             className={`${module.burger} ${menuOpen ? module.active : ""}`}
             onClick={toggleMenu}
@@ -103,10 +90,19 @@ export default function Header() {
         </div>
 
         <div>
-          <Link href="tel:+79235670063" className={module.phone}>
+          {/* 🔥 Телефоны с целью "telephone" */}
+          <Link 
+            href="tel:+79235670063" 
+            className={module.phone}
+            onClick={() => trackGoal('telephone')}
+          >
             +7 (923) 567-00-63
           </Link>
-          <Link href="tel:+73842670063" className={module.phone}>
+          <Link 
+            href="tel:+73842670063" 
+            className={module.phone}
+            onClick={() => trackGoal('telephone')}
+          >
             +7 (384) 267-00-63
           </Link>
           <span className={module.time}>Пн-Сб: 10:00 - 20:00</span>
@@ -114,47 +110,52 @@ export default function Header() {
       </div>
 
       <div className={`${module.mobile_menu} ${menuOpen ? module.active : ""}`}>
-        {/* Логотип в меню */}
         <div className={module.mobile_logo}>
           <img src="/svg/logo/garagelogo.svg" alt="Logo" />
         </div>
 
-        {/* Крестик для закрытия */}
         <div className={module.close_button} onClick={closeMenu}></div>
 
         <div className={module.mobile_nav}>
-          <Link href="/#services" onClick={closeMenu}>
-            Услуги
-          </Link>
-          <Link href="/#how" onClick={closeMenu}>
-            Как работаем
-          </Link>
-          <Link href="/#reviews" onClick={closeMenu}>
-            Отзывы
-          </Link>
-          <Link href="/#faq" onClick={closeMenu}>
-            Ответы на вопросы
-          </Link>
+          <Link href="/#services" onClick={closeMenu}>Услуги</Link>
+          <Link href="/#how" onClick={closeMenu}>Как работаем</Link>
+          <Link href="/#reviews" onClick={closeMenu}>Отзывы</Link>
+          <Link href="/#faq" onClick={closeMenu}>Ответы на вопросы</Link>
         </div>
 
         <div className={module.mobile_contacts}>
-          <Link href="tel:+79235670063" className={module.phone}>
+          {/* 🔥 Телефоны в мобильном меню тоже с целью */}
+          <Link 
+            href="tel:+79235670063" 
+            className={module.phone}
+            onClick={() => trackGoal('telephone')}
+          >
             +7 (923) 567-00-63
           </Link>
-          <Link href="tel:+73842670063" className={module.phone}>
+          <Link 
+            href="tel:+73842670063" 
+            className={module.phone}
+            onClick={() => trackGoal('telephone')}
+          >
             +7 (384) 267-00-63
           </Link>
           <span className={module.time}>Пн-Сб: 10:00 - 20:00</span>
         </div>
 
         <div className={module.mobile_socials}>
+          {/* 🔥 Соцсети в мобильном меню */}
           <Link
             href="https://max.ru/u/f9LHodD0cOJKIJtCLzt9R39PdOR-MG1fi9sdMh9cEZzuXB-ca-EqbrqgtN4"
             target="_blank"
+            onClick={() => trackGoal('max')}
           >
             <img src="/svg/socials/max.svg" alt="Max" />
           </Link>
-          <Link href="https://t.me/avtohelp142" target="_blank">
+          <Link
+            href="https://t.me/avtohelp142"
+            target="_blank"
+            onClick={() => trackGoal('telegram')}
+          >
             <img src="/svg/socials/tg.svg" alt="Telegram" />
           </Link>
         </div>
