@@ -9,8 +9,8 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // 🔥 Helper для вызова целей Яндекс.Метрики
-  const trackGoal = (goalName: string) => {
+  // 🔥 Helper для вызова целей Яндекс.Метрики (без TypeScript)
+  const trackGoal = (goalName) => {
     if (typeof window !== 'undefined' && typeof window.ym === 'function') {
       window.ym(106779809, 'reachGoal', goalName);
     }
@@ -124,7 +124,6 @@ export default function Header() {
         </div>
 
         <div className={module.mobile_contacts}>
-          {/* 🔥 Телефоны в мобильном меню тоже с целью */}
           <Link 
             href="tel:+79235670063" 
             className={module.phone}
@@ -143,7 +142,6 @@ export default function Header() {
         </div>
 
         <div className={module.mobile_socials}>
-          {/* 🔥 Соцсети в мобильном меню */}
           <Link
             href="https://max.ru/u/f9LHodD0cOJKIJtCLzt9R39PdOR-MG1fi9sdMh9cEZzuXB-ca-EqbrqgtN4"
             target="_blank"
