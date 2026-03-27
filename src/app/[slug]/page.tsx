@@ -1,8 +1,25 @@
-// app/services/[slug]/page.jsx
+// app/services/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getServiceBySlug, getAllServiceSlugs } from '../data/services.data';
 import styles from './page.module.scss';
+
+// Тип для параметра slug
+interface Params {
+  slug: string;
+}
+
+// Тип для услуги
+interface Service {
+  slug: string;
+  title: string;
+  shortDescription: string;
+  fullDescription: string;
+  image: string;
+  price: string;
+  time: string;
+  garanty: string;
+}
 
 // 🔥 Генерация статических параметров для всех услуг
 export async function generateStaticParams() {
@@ -11,20 +28,20 @@ export async function generateStaticParams() {
 }
 
 // 🔥 Генерация метаданных для SEO
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: { params: Params }) {
   const { slug } = await params;
   const service = getServiceBySlug(slug);
   
   if (!service) {
     return {
-      title: "Услуга не найдена | Автопомощь 142",
+      title: "Услуга не найдена | АвтоТехЦентр Гараж",
       description: "Запрашиваемая услуга не найдена",
     };
   }
 
-  const title = `${service.title} | Автопомощь 142 — автосервис в Кемерово`;
+  const title = `${service.title} | АвтоТехЦентр Гараж — автосервис в Кемерово`;
   const description = service.fullDescription.slice(0, 160) + '...';
-  const baseUrl = 'https://avtohelp142.ru';
+  const baseUrl = 'https://garage-42.ru';
   const url = `${baseUrl}/services/${slug}`;
 
   return {
@@ -41,7 +58,7 @@ export async function generateMetadata({ params }) {
       title,
       description,
       url,
-      siteName: "Автопомощь 142 — автосервис в Кемерово",
+      siteName: "АвтоТехЦентр Гараж — автосервис в Кемерово",
       images: [
         {
           url: `${baseUrl}${service.image}`,
@@ -68,9 +85,9 @@ export async function generateMetadata({ params }) {
 export const dynamic = 'force-static';
 
 // 🔥 Основной компонент страницы
-export default async function ServicePage({ params }) {
+export default async function ServicePage({ params }: { params: Params }) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const service = getServiceBySlug(slug) as Service | null;
   
   if (!service) {
     notFound();
@@ -92,14 +109,13 @@ export default async function ServicePage({ params }) {
           {/* Левая колонка — изображение */}
           <div className={styles.imageSection}>
             <div className={styles.imageWrapper}>
-              {/* 🔥 ЗАМЕНИЛИ <Image> НА <img> */}
               <img
                 src={service.image}
                 alt={service.title}
                 width="600"
                 height="400"
                 className={styles.mainImage}
-                loading="eager"  // 🔥 priority аналог для img
+                loading="eager"
               />
             </div>
             
@@ -140,6 +156,20 @@ export default async function ServicePage({ params }) {
               <Link href="/#services" className={styles.secondaryButton}>
                 Смотреть все услуги
               </Link>
+            </div>
+
+            {/* 🔥 CTA блок — акцент на выгоду */}
+            <div className={styles.ctaBox}>
+              <p>
+                <span className={styles.ctaIcon}>🎁 </span>
+                <span className={styles.ctaText}>
+                  Запишись сейчас — <strong>диагностика в подарок</strong>
+                </span>
+                {/* <span className={styles.ctaArrow} aria-hidden="true"></span> */}
+              </p>
+              <p className={styles.ctaNote}>
+                Предложение действует при записи онлайн. Успейте забронировать время!
+              </p>
             </div>
           </div>
         </div>

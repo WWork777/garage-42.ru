@@ -175,3 +175,92 @@
     flex-direction: column;
   }
 }
+
+// === CTA Box ===
+.ctaBox {
+  margin-top: 32px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(255, 196, 14, 0.15), rgba(255, 196, 14, 0.05));
+  border: 1px solid rgba(255, 196, 14, 0.3);
+  border-radius: 16px;
+  text-align: center;
+
+  @media (max-width: 992px) {
+    margin-top: 24px;
+    padding: 16px;
+  }
+}
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ffc40e, #ffb300);
+  color: #1a1a1a;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.3;
+  box-shadow: 0 4px 20px rgba(255, 196, 14, 0.4);
+  transition: all 0.3s ease;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 196, 14, 0.6);
+    background: linear-gradient(135deg, #ffb300, #faa300);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  .ctaIcon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .ctaText {
+    strong {
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+  }
+
+  .ctaArrow {
+    font-size: 18px;
+    font-weight: 700;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .ctaArrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px 20px;
+    font-size: 14px;
+    width: 100%;
+    
+    .ctaArrow {
+      font-size: 16px;
+    }
+  }
+}
+
+.ctaNote {
+  margin-top: 12px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.4;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+}

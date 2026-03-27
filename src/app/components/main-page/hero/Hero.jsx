@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import module from "./Hero.module.scss";
+import Image from "next/image";
 
 export default function Hero() {
   const [formData, setFormData] = useState({
@@ -28,132 +29,66 @@ export default function Hero() {
 
   // Маска для телефона
   const handlePhoneChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // Удаляем все нецифровые символы
+    let value = e.target.value.replace(/\D/g, "");
 
-    // Применяем маску +7 (___) ___-__-__
     if (value.length > 0) {
-      if (value.length === 1) {
-        value = `+7 (${value}`;
-      } else if (value.length <= 4) {
-        value = `+7 (${value.slice(1, 4)}`;
-      } else if (value.length <= 7) {
-        value = `+7 (${value.slice(1, 4)}) ${value.slice(4, 7)}`;
-      } else if (value.length <= 9) {
-        value = `+7 (${value.slice(1, 4)}) ${value.slice(4, 7)}-${value.slice(7, 9)}`;
-      } else {
-        value = `+7 (${value.slice(1, 4)}) ${value.slice(4, 7)}-${value.slice(7, 9)}-${value.slice(9, 11)}`;
-      }
+      if (value.startsWith("8")) value = "7" + value.slice(1);
+      if (!value.startsWith("7")) value = "7" + value;
+      
+      if (value.length <= 1) value = "+7";
+      else if (value.length <= 4) value = `+7 (${value.slice(1)}`;
+      else if (value.length <= 7) value = `+7 (${value.slice(1, 4)}) ${value.slice(4)}`;
+      else if (value.length <= 9) value = `+7 (${value.slice(1, 4)}) ${value.slice(4, 7)}-${value.slice(7)}`;
+      else value = `+7 (${value.slice(1, 4)}) ${value.slice(4, 7)}-${value.slice(7, 9)}-${value.slice(9, 11)}`;
     }
 
-    setFormData((prev) => ({
-      ...prev,
-      phone: value,
-    }));
+    setFormData((prev) => ({ ...prev, phone: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.agreement) {
-      setStatus({
-        loading: false,
-        success: false,
-        error: true,
-        message: "Необходимо согласие с политикой обработки данных",
-      });
+      setStatus({ loading: false, success: false, error: true, message: "Необходимо согласие с политикой обработки данных" });
       return;
     }
 
     if (!formData.service || !formData.car || !formData.phone) {
-      setStatus({
-        loading: false,
-        success: false,
-        error: true,
-        message: "Пожалуйста, заполните все обязательные поля",
-      });
+      setStatus({ loading: false, success: false, error: true, message: "Пожалуйста, заполните все обязательные поля" });
       return;
     }
 
-    // Очищаем телефон от скобок и тире для отправки
     const cleanPhone = formData.phone.replace(/[^\d+]/g, "");
-
     setStatus({ loading: true, success: false, error: false, message: "" });
 
     try {
       const response = await fetch("/api/send-to-telegram", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          phone: cleanPhone,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, phone: cleanPhone }),
       });
 
       const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Ошибка при отправке");
 
-      if (!response.ok) {
-        throw new Error(data.error || "Ошибка при отправке");
-      }
-
-      // Отправляем цель в Яндекс.Метрику
+      // Яндекс.Метрика
       if (typeof window !== "undefined" && window.ym) {
         window.ym(106779809, "reachGoal", "hero_form");
       }
 
-      setStatus({
-        loading: false,
-        success: true,
-        error: false,
-        message:
-          "Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.",
-      });
+      setStatus({ loading: false, success: true, error: false, message: "Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время." });
+      setFormData({ service: "", car: "", phone: "", agreement: false });
 
-      // Очищаем форму
-      setFormData({
-        service: "",
-        car: "",
-        phone: "",
-        agreement: false,
-      });
-
-      // Сбрасываем статус успеха через 5 секунд
-      setTimeout(() => {
-        setStatus((prev) => ({ ...prev, success: false, message: "" }));
-      }, 5000);
+      setTimeout(() => setStatus((prev) => ({ ...prev, success: false, message: "" })), 5000);
     } catch (error) {
-      setStatus({
-        loading: false,
-        success: false,
-        error: true,
-        message: "Произошла ошибка при отправке. Попробуйте позже.",
-      });
+      setStatus({ loading: false, success: false, error: true, message: "Произошла ошибка при отправке. Попробуйте позже." });
     }
   };
 
-  // Обработчик клавиш для телефона
-  const handlePhoneKeyDown = (e) => {
-    // Разрешаем Backspace, Delete, Tab, Escape, Enter, стрелки
-    if (
-      e.key === "Backspace" ||
-      e.key === "Delete" ||
-      e.key === "Tab" ||
-      e.key === "Escape" ||
-      e.key === "Enter" ||
-      e.key === "ArrowLeft" ||
-      e.key === "ArrowRight" ||
-      e.key === "ArrowUp" ||
-      e.key === "ArrowDown" ||
-      e.key === "Home" ||
-      e.key === "End"
-    ) {
-      return;
-    }
-
-    // Разрешаем только цифры
-    if (!/^\d$/.test(e.key) && e.key !== "+") {
-      e.preventDefault();
+  // Трекинг клика по CTA
+  const handleCTAClick = () => {
+    if (typeof window !== "undefined" && window.ym) {
+      window.ym(106779809, "reachGoal", "hero_cta_diagnostic");
     }
   };
 
@@ -171,8 +106,7 @@ export default function Hero() {
 
         <h1 className={module.title}>Автосервис в Кемерово</h1>
         <p>
-          Диагностика, ТО и ремонт. Согласуем работы и стоимость до начала — без
-          сюрпризов.
+          Диагностика, ТО и ремонт. Согласуем работы и стоимость до начала — без сюрпризов.
         </p>
 
         <form onSubmit={handleSubmit} className={module.form}>
@@ -207,9 +141,8 @@ export default function Hero() {
                 name="phone"
                 value={formData.phone}
                 onChange={handlePhoneChange}
-                onKeyDown={handlePhoneKeyDown}
                 disabled={status.loading}
-                maxLength="18"
+                maxLength={18}
               />
             </div>
 
@@ -229,7 +162,7 @@ export default function Hero() {
               />
               <span>
                 Я соглашаюсь на обработку персональных данных и с{" "}
-                <a href="/privacy-policy.pdf" target="_blank">
+                <a href="/privacy-policy.pdf" target="_blank" rel="noopener noreferrer">
                   политикой конфиденциальности
                 </a>
               </span>
@@ -237,13 +170,21 @@ export default function Hero() {
           </div>
 
           {status.message && (
-            <div
-              className={`${module.message} ${status.success ? module.success : module.error}`}
-            >
+            <div className={`${module.message} ${status.success ? module.success : module.error}`}>
               {status.message}
             </div>
           )}
         </form>
+
+        {/* 🔥 CTA блок — диагностика бесплатно */}
+        <p 
+        className={module.cta_diagnostic}>
+          <span className={module.cta_icon}> </span>
+          <span className={module.cta_text}>
+             Запишись сейчас — <strong>диагностика бесплатно</strong>
+          </span>
+          {/* <span className={module.cta_arrow} aria-hidden="true"> </span> */}
+        </p>
       </div>
     </section>
   );

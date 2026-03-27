@@ -662,3 +662,207 @@
     font-size: 14px;
   }
 }
+
+
+// === CTA: Диагностика бесплатно (ЭЛЕГАНТНЫЙ КРАСНЫЙ) ===
+.cta_diagnostic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 32px;
+  margin-top: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.3;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: fit-content;
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+  border: 1.4px solid #ffc40e;
+      min-height: 40px;
+    align-content: space-around;
+    text-align: center;
+    
+    
+
+  // 🔥 Анимированная красная линия снизу
+  // .cta_line {
+  //   position: absolute;
+  //   bottom: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   height: 3px;
+  //   background: linear-gradient(90deg, #ee122a, #ff2a42, #ee122a);
+  //   background-size: 200% 100%;
+  //   transform: scaleX(0);
+  //   transform-origin: left;
+  //   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  //   animation: lineShimmer 3s ease-in-out infinite;
+  // }
+
+  // Лёгкое свечение по краям
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    box-shadow: 
+      inset 0 0 0 1px rgba(238, 18, 42, 0),
+      0 0 20px rgba(238, 18, 42, 0);
+    transition: all 0.4s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    background: rgba(238, 18, 42, 0.1);
+    border-color: inear-gradient(90deg, #ee122a, #ff2a42, #ee122a);
+    transform: translateY(-2px);
+
+    &::before {
+      box-shadow: 
+        inset 0 0 0 1px rgba(238, 18, 42, 0.3),
+        0 8px 24px rgba(238, 18, 42, 0.3);
+    }
+
+    .cta_line {
+      transform: scaleX(1);
+    }
+
+    .cta_arrow {
+      transform: translateX(6px);
+      color: #ff2a42;
+    }
+
+    .cta_icon {
+      animation: giftBounce 0.6s ease;
+    }
+
+    .cta_text strong {
+      // color: #ff2a42;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
+    transition: all 0.1s ease;
+  }
+
+  .cta_content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .cta_icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+  .cta_text {
+    text-align: left;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.9);
+    transition: color 0.3s ease;
+    
+    strong {
+      color: #ffffff;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+  }
+
+  .cta_arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    color: rgba(255, 255, 255, 0.8);
+
+    svg {
+      transition: transform 0.4s ease;
+    }
+  }
+
+  // Адаптив
+  @media (max-width: 768px) {
+    padding: 14px 28px;
+    margin-top: 28px;
+    font-size: 15px;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+
+    .cta_icon {
+      font-size: 18px;
+    }
+
+    .cta_arrow {
+      width: 34px;
+      height: 34px;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 14px 24px;
+    margin-top: 24px;
+    border-radius: 12px;
+    
+    .cta_content {
+      gap: 10px;
+    }
+
+    .cta_text {
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .cta_icon {
+      font-size: 17px;
+    }
+  }
+}
+
+// === Анимации ===
+@keyframes lineShimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes giftBounce {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.15) rotate(-10deg);
+  }
+  75% {
+    transform: scale(1.15) rotate(10deg);
+  }
+}
