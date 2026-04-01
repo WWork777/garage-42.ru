@@ -24,7 +24,7 @@ interface Service {
 // 🔥 Генерация статических параметров для всех услуг
 export async function generateStaticParams() {
   const services = getAllServiceSlugs();
-  return services;
+  return services.map((s) => ({ slug: s.slug }));
 }
 
 // 🔥 Генерация метаданных для SEO
@@ -147,14 +147,16 @@ export default async function ServicePage({ params }: { params: Params }) {
               <p className={styles.fullDescription}>{service.fullDescription}</p>
             </div>
 
-            {/* Кнопки действий */}
+            {/* ✅ Кнопки — простые ссылки */}
             <div className={styles.actions}>
-              <Link href="/#form" className={styles.primaryButton}>
+              {/* Кнопка "Записаться" — просто переход на главную */}
+              <Link href="/" className={styles.primaryButton}>
                 Записаться на услугу
               </Link>
               
-              <Link href="/#services" className={styles.secondaryButton}>
-                Смотреть все услуги
+              {/* Кнопка "Рассчитать" — переход на главную с якорем на калькулятор */}
+              <Link href="/#calc2" className={styles.secondaryButton}>
+                Рассчитать стоимость
               </Link>
             </div>
 
@@ -165,7 +167,6 @@ export default async function ServicePage({ params }: { params: Params }) {
                 <span className={styles.ctaText}>
                   Запишись сейчас — <strong>диагностика в подарок</strong>
                 </span>
-                {/* <span className={styles.ctaArrow} aria-hidden="true"></span> */}
               </p>
               <p className={styles.ctaNote}>
                 Предложение действует при записи онлайн. Успейте забронировать время!

@@ -2,6 +2,24 @@
 
 import React, { useState } from 'react';
 import styles from './CalcQuiz.module.scss';
+import Link from 'next/link';
+
+// Типизируем глобальную функцию ym для TypeScript
+declare global {
+  interface Window {
+    ym?: (counterId: number, command: string, goalId: string, options?: any) => void;
+  }
+}
+
+// ✅ Настройки Яндекс.Метрики
+const COUNTER_ID = 106779809;
+
+const sendYandexGoal = (goalId: string) => {
+  if (typeof window !== 'undefined' && window.ym) {
+    window.ym(COUNTER_ID, 'reachGoal', goalId);
+    // console.log(`🎯 YM goal sent: ${goalId}`); // Раскомментируйте для отладки
+  }
+};
 
 type QuizData = {
   tasks: string;
@@ -44,11 +62,11 @@ const CalcQuiz = () => {
     try {
       // Формируем данные в формате, который ожидает API
       const payload = {
-        service: formData.tasks || 'Расчёт стоимости', // Обязательно
-        phone: formData.phone.replace(/\D/g, ''),       // Обязательно, только цифры
-        car: `${formData.carModel}, пробег: ${formData.currentMileage}`.trim(), // Опционально
-        name: formData.name || undefined,               // Опционально
-        source: 'quiz_calc',                            // Доп. поле для аналитики
+        service: formData.tasks || 'Расчёт стоимости',
+        phone: formData.phone.replace(/\D/g, ''),
+        car: `${formData.carModel}, пробег: ${formData.currentMileage}`.trim(),
+        name: formData.name || undefined,
+        source: 'quiz_calc',
       };
 
       const response = await fetch('/api/send-to-telegram', {
@@ -64,6 +82,10 @@ const CalcQuiz = () => {
       }
 
       setSubmitStatus('success');
+      
+      // ✅ Отправляем цель при успешной отправке формы калькулятора
+      sendYandexGoal('calc_form');
+      
       // Сброс формы через 2 секунды
       setTimeout(() => {
         setFormData({
@@ -244,6 +266,14 @@ const CalcQuiz = () => {
                 </button>
               )}
             </div>
+
+            {/* ✅ Политика конфиденциальности (как в модалке) */}
+            <p className={styles.policy}>
+              Нажимая кнопку, вы соглашаетесь с{' '}
+              <Link href="/privacy-policy.pdf" target="_blank" className={styles.policy_link}>
+                политикой конфиденциальности
+              </Link>
+            </p>
           </form>
         </div>
       </div>

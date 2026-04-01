@@ -12,12 +12,17 @@ declare global {
   }
 }
 
+// ✅ Обновлённый счётчик и цели
+const COUNTER_ID = 106779809;
+
 const sendYandexGoal = (goalId: string) => {
   if (typeof window !== 'undefined' && window.ym) {
-    window.ym(106319272, 'reachGoal', goalId);
+    window.ym(COUNTER_ID, 'reachGoal', goalId);
+    console.log(`🎯 YM goal sent: ${goalId}`); // Для отладки (можно убрать в продакшене)
   }
 };
 
+// Форматирование телефона: +7 (999) 123-45-67
 const formatPhone = (value: string): string => {
   const numbers = value.replace(/\D/g, '');
   const normalized = numbers.startsWith('8') ? '7' + numbers.slice(1) : numbers;
@@ -32,6 +37,7 @@ const formatPhone = (value: string): string => {
   return `+7 (${withCode.slice(1, 4)}) ${withCode.slice(4, 7)}-${withCode.slice(7, 9)}-${withCode.slice(9, 11)}`;
 };
 
+// Получаем только цифры из отформатированного номера для отправки
 const getPhoneNumbers = (value: string): string => {
   return value.replace(/\D/g, '').slice(0, 11);
 };
@@ -81,12 +87,12 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose }) => {
     setSubmitStatus('idle');
 
     try {
-      // Формируем данные под API: service и phone — обязательные
+      // Формируем данные под API
       const payload = {
-        service: `Заказ звонка (${formData.carType})`, // Обязательно
-        phone: getPhoneNumbers(formData.phone),         // Обязательно
-        name: formData.name.trim() || undefined,        // Опционально
-        source: 'modal_callback',                       // Доп. поле
+        service: `Заказ звонка (${formData.carType})`,
+        phone: getPhoneNumbers(formData.phone),
+        name: formData.name.trim() || undefined,
+        source: 'modal_callback',
       };
 
       const response = await fetch('/api/send-to-telegram', {
@@ -102,7 +108,9 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose }) => {
       }
 
       setSubmitStatus('success');
-      sendYandexGoal('form_submit_success');
+      
+      // ✅ Отправляем цель при УСПЕШНОЙ отправке формы
+      sendYandexGoal('modal_form');
       
       setTimeout(() => {
         setFormData({ name: '', phone: '', carType: 'Легковой автомобиль', agreed: false });
@@ -113,15 +121,18 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose }) => {
     } catch (error: any) {
       console.error('❌ Ошибка отправки:', error.message);
       setSubmitStatus('error');
-      sendYandexGoal('form_submit_error');
+      // ❌ Опционально: цель при ошибке (если нужно отслеживать)
+      // sendYandexGoal('form_submit_error');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // Обработчик для внешних ссылок с трекингом
   const handleExternalLink = (e: React.MouseEvent, goalId: string, href: string) => {
     e.preventDefault();
     sendYandexGoal(goalId);
+    
     setTimeout(() => {
       window.open(href, '_blank', 'noopener,noreferrer');
     }, 150);
@@ -139,47 +150,86 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         <div className={styles.contactMethods}>
-          <a href="tel:+79234807070" className={styles.methodCard}
-            onClick={(e) => handleExternalLink(e, 'call_clicked', 'tel:+79234807070')}>
+          {/* ✅ Телефон: цель 'telephone' */}
+          <a 
+            href="tel:+79234807070" 
+            className={styles.methodCard}
+            onClick={(e) => handleExternalLink(e, 'telephone', 'tel:+79234807070')}
+          >
             <Image src="/icons/phone.svg" alt="телефон" width="20" height="20" />
             ЗВОНОК
           </a>
-          <a href="https://max.ru/u/f9LHodD0cOJKIJtCLzt9R39PdOR-MG1fi9sdMh9cEZzuXB-ca-EqbrqgtN4"
-            className={`${styles.methodCard} ${styles.max}`} target="_blank" rel="noopener noreferrer"
-            onClick={(e) => handleExternalLink(e, 'max', 'https://max.ru/u/f9LHodD0cOJKIJtCLzt9R39PdOR-MG1fi9sdMh9cEZzuXB-ca-EqbrqgtN4')}>
+          
+          {/* ✅ MAX: цель 'max' */}
+          <a 
+            href="https://max.ru/u/f9LHodD0cOJKIJtCLzt9R39PdOR-MG1fi9sdMh9cEZzuXB-ca-EqbrqgtN4"
+            className={`${styles.methodCard} ${styles.max}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => handleExternalLink(e, 'max', 'https://max.ru/u/f9LHodD0cOJKIJtCLzt9R39PdOR-MG1fi9sdMh9cEZzuXB-ca-EqbrqgtN4')}
+          >
             <Image src="/icons/max-blue.svg" alt="макс" width="20" height="20" />
             MAX
           </a>
-          <a href="https://t.me/avtohelp142" className={`${styles.methodCard} ${styles.telegram}`}
-            target="_blank" rel="noopener noreferrer"
-            onClick={(e) => handleExternalLink(e, 'telegram', 'https://t.me/avtohelp142')}>
+          
+          {/* ✅ Telegram: цель 'telegram' */}
+          <a 
+            href="https://t.me/avtohelp142"
+            className={`${styles.methodCard} ${styles.telegram}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => handleExternalLink(e, 'telegram', 'https://t.me/avtohelp142')}
+          >
             <Image src="/icons/tg-blue.svg" alt="телеграм" width="20" height="20" />
             TELEGRAM
           </a>
         </div>
 
-        <div className={styles.divider}><span>ИЛИ ФОРМА</span></div>
+        <div className={styles.divider}>
+          <span>ИЛИ ФОРМА</span>
+        </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
             <label>Ваше имя</label>
-            <input type="text" name="name" placeholder="Введите имя" value={formData.name}
-              onChange={handleChange} disabled={isSubmitting || submitStatus === 'success'} />
+            <input 
+              type="text" 
+              name="name"
+              placeholder="Введите имя" 
+              value={formData.name}
+              onChange={handleChange}
+              disabled={isSubmitting || submitStatus === 'success'}
+            />
           </div>
 
           <div className={styles.inputGroup}>
             <label>Телефон *</label>
-            <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required
-              value={formData.phone} onChange={handleChange}
-              disabled={isSubmitting || submitStatus === 'success'} />
+            <input 
+              type="tel" 
+              name="phone"
+              placeholder="+7 (___) ___-__-__" 
+              required
+              value={formData.phone}
+              onChange={handleChange}
+              disabled={isSubmitting || submitStatus === 'success'}
+            />
           </div>
 
-          {submitStatus === 'success' && <p className={styles.successMsg}>✅ Заявка отправлена!</p>}
-          {submitStatus === 'error' && <p className={styles.errorMsg}>❌ Ошибка. Попробуйте позвонить нам.</p>}
+          {submitStatus === 'success' && (
+            <p className={styles.successMsg}>✅ Заявка отправлена!</p>
+          )}
+          {submitStatus === 'error' && (
+            <p className={styles.errorMsg}>❌ Ошибка. Попробуйте позвонить нам.</p>
+          )}
 
-          <button type="submit" className={styles.submitBtn}
-            disabled={isSubmitting || submitStatus === 'success'}>
-            {isSubmitting ? 'Отправка...' : submitStatus === 'success' ? 'Отправлено ✓' : 'ОТПРАВИТЬ ЗАЯВКУ'}
+          {/* ✅ Кнопка отправки формы: цель 'modal_form' (отправляется при успехе) */}
+          <button 
+            type="submit" 
+            className={styles.submitBtn}
+            disabled={isSubmitting || submitStatus === 'success'}
+          >
+            {isSubmitting ? 'Отправка...' : 
+             submitStatus === 'success' ? 'Отправлено ✓' : 'ОТПРАВИТЬ ЗАЯВКУ'}
           </button>
         </form>
 
