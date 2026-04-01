@@ -24,6 +24,8 @@ const CalcQuiz = () => {
     name: '',
     phone: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
@@ -31,6 +33,56 @@ const CalcQuiz = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Отправка данных в API
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      // Формируем данные в формате, который ожидает API
+      const payload = {
+        service: formData.tasks || 'Расчёт стоимости', // Обязательно
+        phone: formData.phone.replace(/\D/g, ''),       // Обязательно, только цифры
+        car: `${formData.carModel}, пробег: ${formData.currentMileage}`.trim(), // Опционально
+        name: formData.name || undefined,               // Опционально
+        source: 'quiz_calc',                            // Доп. поле для аналитики
+      };
+
+      const response = await fetch('/api/send-to-telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Ошибка отправки');
+      }
+
+      setSubmitStatus('success');
+      // Сброс формы через 2 секунды
+      setTimeout(() => {
+        setFormData({
+          tasks: '',
+          needsParts: '',
+          carModel: '',
+          currentMileage: '',
+          name: '',
+          phone: '',
+        });
+        setSubmitStatus('idle');
+        setCurrentStep(1);
+      }, 2000);
+    } catch (error) {
+      console.error('Ошибка отправки:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderStepContent = () => {
@@ -145,7 +197,7 @@ const CalcQuiz = () => {
         </h2>
 
         <div className={styles.quiz_card}>
-          {/* Степпер (Прогресс-бар) */}
+          {/* Степпер */}
           <div className={styles.stepper}>
             {[...Array(totalSteps)].map((_, index) => {
               const stepNum = index + 1;
@@ -159,24 +211,36 @@ const CalcQuiz = () => {
             })}
           </div>
 
-          {/* Контент шага */}
-          <form className={styles.content_form}>
+          {/* Форма */}
+          <form className={styles.content_form} onSubmit={handleSubmit}>
             {renderStepContent()}
+
+            {/* Статусы отправки */}
+            {submitStatus === 'success' && (
+              <p className={styles.successMsg}>✅ Заявка отправлена! Мы свяжемся с вами.</p>
+            )}
+            {submitStatus === 'error' && (
+              <p className={styles.errorMsg}>❌ Ошибка. Попробуйте позвонить нам напрямую.</p>
+            )}
 
             {/* Кнопки навигации */}
             <div className={styles.actions}>
               {currentStep > 1 && (
-                <button type="button" className={styles.btn_back} onClick={prevStep}>
+                <button type="button" className={styles.btn_back} onClick={prevStep} disabled={isSubmitting}>
                   Назад
                 </button>
               )}
               {currentStep < totalSteps ? (
-                <button type="button" className={styles.btn_next} onClick={nextStep}>
+                <button type="button" className={styles.btn_next} onClick={nextStep} disabled={isSubmitting}>
                   Далее <span className={styles.icon}>→</span>
                 </button>
               ) : (
-                <button type="submit" className={styles.btn_submit}>
-                  Получить расчет
+                <button 
+                  type="submit" 
+                  className={styles.btn_submit}
+                  disabled={isSubmitting || submitStatus === 'success'}
+                >
+                  {isSubmitting ? 'Отправка...' : submitStatus === 'success' ? 'Отправлено ✓' : 'Получить расчет'}
                 </button>
               )}
             </div>

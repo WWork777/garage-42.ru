@@ -246,7 +246,7 @@ function ServicesCard({ title, time, image, price, garanty, fullDescription, slu
           Записаться
         </button>
         {/* 🔥 Используем готовый slug из данных */}
-        <Link href={`/${slug}`} className={`${module.services_card__buttons__more} ${module.link_more}`}>
+        <Link  href={`/${slug}`} className={`${module.services_card__buttons__more} ${module.link_more}`}>
           Подробнее
         </Link>
       </div>

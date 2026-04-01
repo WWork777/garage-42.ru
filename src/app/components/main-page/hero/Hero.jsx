@@ -2,11 +2,48 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import styles from './Hero.module.scss';
 import OrderModal from '../ModalNew/ModalNew';
 
 const Hero = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
+
+  // Функция плавного скролла к якорю
+  const scrollToAnchor = (targetId) => {
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    const tryScroll = () => {
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        const headerHeight = 200; // Увеличенный отступ чтобы останавливаться выше
+        const targetPosition = targetElement.offsetTop - headerHeight;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth',
+        });
+        return true;
+      }
+      
+      attempts++;
+      if (attempts < maxAttempts) {
+        setTimeout(tryScroll, 100);
+      }
+      return false;
+    };
+    
+    tryScroll();
+  };
+
+  // Обработчик клика "Рассчитать стоимость"
+  const handleCalculateClick = () => {
+    scrollToAnchor('calc2');
+    // Обновляем URL (опционально)
+    window.history.pushState(null, '', '/#calc2');
+  };
 
   return (
     <>
@@ -14,91 +51,109 @@ const Hero = () => {
         <div className={styles.main_container}>
           <div className={styles.content_wrapper}>
             
-            {/* Левый столбец (Текст) */}
+            {/* Левый столбец — Текст и кнопки */}
             <div className={styles.content_info}>
               <h1 className={styles.main_title}>
-                РЕМОНТ И ОБСЛУЖИВАНИЕ АВТОМОБИЛЕЙ <br /> 
-                <span className={styles.highlight}>В КЕМЕРОВО</span>
+                РЕМОНТ И ОБСЛУЖИВАНИЕ <br />
+                <span className={styles.highlight}>АВТОМОБИЛЕЙ В КЕМЕРОВО</span>
               </h1>
+              
               <p className={styles.description}>
-                Сделаем так, чтобы не пришлось возвращаться. 
+                Сделаем так, чтобы не пришлось возвращаться.
               </p>
 
+              {/* Список услуг */}
               <div className={styles.services_list}>
                 <div className={styles.service_item}>
-                  <Image className={styles.icons_points} src="/icons/airplay.svg" width={25} height={25} alt="Диагностика" />
+                  <Image className={styles.icons_points} src="/icons/airplay.svg" width={28} height={28} alt="Диагностика" />
                   <span>Диагностика</span>
                 </div>
                 <div className={styles.service_item}>
-                  <Image className={styles.icons_points} src="/icons/timer.svg" width={25} height={25} alt="Обслуживание" />
+                  <Image className={styles.icons_points} src="/icons/timer.svg" width={28} height={28} alt="Обслуживание" />
                   <span>Обслуживание</span>
                 </div>
                 <div className={styles.service_item}>
-                  <Image className={styles.icons_points} src="/icons/key.svg" width={25} height={25} alt="Ремонт" />
+                  <Image className={styles.icons_points} src="/icons/key.svg" width={28} height={28} alt="Ремонт" />
                   <span>Ремонт</span>
                 </div>
               </div>
 
+              {/* Кнопки */}
               <div className={styles.actions}>
-                <div className="cont1">
-                  <button className={styles.btn_red} onClick={() => setIsModalOpen(true)}>
-                    <span className={styles.icon}>→</span>
-                    Записаться на диагностику
-                  </button>
-                  <p className={styles.promo}>🔥 Запишись сейчас — диагностика <strong>бесплатно</strong></p>
-                </div>
-                <button className={styles.btn_glass}>
-                  <img src="/icons/calc.svg" alt="calc" width="20" height="20"/>
+                <button 
+                  className={styles.btn_red} 
+                  onClick={() => setIsModalOpen(true)}
+                  aria-label="Записаться на бесплатную диагностику"
+                >
+                  <span className={styles.icon}>→</span>
+                  Записаться на диагностику
+                </button>
+                
+                {/* Кнопка "Рассчитать стоимость" */}
+                <button 
+                  type="button" 
+                  className={styles.btn_glass}
+                  onClick={handleCalculateClick}
+                >
+                  <Image src="/icons/calc.svg" alt="" width={20} height={20} />
                   Рассчитать стоимость
                 </button>
               </div>
+
+              <p className={styles.promo}>
+                🔥 Запишись сейчас — диагностика <strong>бесплатно</strong>
+              </p>
             </div>
 
-            {/* Правый столбец — Виджет с Яндекс.Картой */}
+            {/* Правый столбец — Карточка статуса и карта */}
             <div className={styles.content_media}>
               <div className={styles.status_card}>
+                
                 <div className={styles.status_header}>
                   <div className={styles.status_title}>
                     <h3>Статус сервиса</h3>
                     <p>Обновлено: только что</p>
                   </div>
-                  <div className={styles.online_indicator}></div>
+                  <div className={styles.online_indicator} aria-label="Сервис онлайн"></div>
                 </div>
 
                 <div className={styles.stats_grid}>
                   <div className={styles.stat_box}>
-                    <img src="/icons/meh.svg" alt="подъемники" width="24" height="24"/>
+                    <Image src="/icons/meh.svg" alt="" width={24} height={24} />
                     <div className={styles.stat_val}>2</div>
-                    <div className={styles.stat_label}>СВОБОДНЫХ БОКСА</div>
+                    <div className={styles.stat_label}>Свободных бокса</div>
                   </div>
                   <div className={styles.stat_box}>
-                    <img src="/icons/time.svg" alt="время" width="24" height="24"/>
+                    <Image src="/icons/time.svg" alt="" width={24} height={24} />
                     <div className={styles.stat_val}>10:00 - 20:00</div>
-                    <div className={styles.stat_label}>ВРЕМЯ РАБОТЫ</div>
+                    <div className={styles.stat_label}>Время работы</div>
                   </div>
                 </div>
 
-                {/* Контейнер для Яндекс.Карты (iframe) */}
+                {/* Карта */}
                 <div className={styles.map_container}>
-                  <iframe 
-                    className={styles.map_frame}
-                    src="https://yandex.ru/map-constructor/?um=constructor%3Ab190f6592e4ae252d8a8ab561ed086b4d907057a7c98ade45adab1d838ef3029&amp;width=100%25&amp;height=240&amp;lang=ru_RU&amp;scroll=false"
-                    width="100%" 
-                    height="240" 
-                    frameBorder="0" 
-                    allowFullScreen
-                    title="Яндекс.Карта сервиса в Кемерово"
-                    loading="lazy"
-                  />
+                  <div className={styles.map_wrapper}>
+                    <iframe 
+                      src="https://yandex.ru/map-widget/v1/?um=constructor%3Ab190f6592e4ae252d8a8ab561ed086b4d907057a7c98ade45adab1d838ef3029&amp;source=constructor"
+                      className={styles.map_frame}
+                      loading="lazy"
+                      title="Наш автосервис на Яндекс.Картах"
+                    />
+                  </div>
                   <div className={styles.map_overlay_btn}>
-                    <button type="button">Найти ближайший сервис</button>
+                    <a href="https://yandex.ru/maps/-/CPbkNP3a" target="_blank" rel="noopener noreferrer">
+                      <button type="button" className={styles.map_btn}>
+                        Автосервис на картах ↗
+                      </button>
+                    </a>
                   </div>
                 </div>
 
                 <div className={styles.status_footer}>
-                  <div className={styles.info_icon}>i</div>
+                  <div className={styles.info_icon} aria-hidden="true">i</div>
                   <p>Работаем во всех районах Кемерово. Принимаем карты, наличные и переводы.</p>
                 </div>
+
               </div>
             </div>
 

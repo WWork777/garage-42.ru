@@ -7,44 +7,96 @@ const TELEGRAM_CHAT_ID = "-5256763945";
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { service, car, phone, name } = body;
+    const { 
+      service, 
+      car, 
+      phone, 
+      name, 
+      source,
+      // Поля из калькулятора
+      tasks,
+      needsParts,
+      carModel,
+      currentMileage,
+      // Поле из модалки
+      carType,
+    } = body;
 
-    // Валидация - проверяем наличие обязательных полей
-    if (!service || !phone) {
+    // Валидация - телефон обязателен всегда
+    if (!phone) {
       return NextResponse.json(
-        { error: "Услуга и телефон обязательны для заполнения" },
+        { error: "Телефон обязателен для заполнения" },
         { status: 400 },
       );
     }
 
-    // Определяем, откуда пришла заявка (главная форма или модалка услуг)
+    // Определяем источник и формируем сообщение
     let message = "";
+    let formattedService = service;
 
-    if (car) {
-      // Заявка с главной формы Hero
+    // 1. Заявка из калькулятора (CalcQuiz)
+    if (source === 'quiz_calc' || (tasks && carModel)) {
+      formattedService = tasks || 'Расчёт стоимости';
       message = `
-🆕 Новая заявка с главной формы!
+🆕 <b>НОВАЯ ЗАЯВКА ИЗ КАЛЬКУЛЯТОРА</b>
 
-📋 Услуга: ${service}
-🚗 Автомобиль: ${car}
-📞 Телефон: ${phone}
-🕐 Время: ${new Date().toLocaleString("ru-RU")}
+🔧 <b>Работы:</b> ${formattedService}
+🚗 <b>Автомобиль:</b> ${carModel || car || 'Не указан'}
+📏 <b>Пробег:</b> ${currentMileage || 'Не указан'}
+🔩 <b>Запчасти:</b> ${needsParts || 'Не указано'}
+👤 <b>Имя:</b> ${name || 'Не указано'}
+📞 <b>Телефон:</b> ${phone}
+🕐 <b>Время:</b> ${new Date().toLocaleString("ru-RU")}
       `;
-    } else if (name) {
-      // Заявка из модального окна Services
+    }
+    // 2. Заказ звонка (OrderModal)
+    else if (source === 'modal_callback' || carType) {
+      formattedService = `Заказ звонка (${carType || 'Не указан'})`;
       message = `
-🆕 Новая заявка на услугу!
+🆕 <b>НОВАЯ ЗАЯВКА — ЗАКАЗ ЗВОНКА</b>
 
-👤 Имя: ${name}
-🔧 Услуга: ${service}
-📞 Телефон: ${phone}
-🕐 Время: ${new Date().toLocaleString("ru-RU")}
+🔧 <b>Тип услуги:</b> ${formattedService}
+👤 <b>Имя:</b> ${name || 'Не указано'}
+📞 <b>Телефон:</b> ${phone}
+🕐 <b>Время:</b> ${new Date().toLocaleString("ru-RU")}
       `;
-    } else {
-      return NextResponse.json(
-        { error: "Неверный формат данных" },
-        { status: 400 },
-      );
+    }
+    // 3. Заявка с главной формы Hero (есть car, нет name)
+    else if (car && !name) {
+      formattedService = service || 'Заявка с главной';
+      message = `
+🆕 <b>НОВАЯ ЗАЯВКА С ГЛАВНОЙ ФОРМЫ</b>
+
+🔧 <b>Услуга:</b> ${formattedService}
+🚗 <b>Автомобиль:</b> ${car}
+📞 <b>Телефон:</b> ${phone}
+🕐 <b>Время:</b> ${new Date().toLocaleString("ru-RU")}
+      `;
+    }
+    // 4. Заявка из модального окна Services (есть name, нет car)
+    else if (name && !car) {
+      formattedService = service || 'Заявка на услугу';
+      message = `
+🆕 <b>НОВАЯ ЗАЯВКА НА УСЛУГУ</b>
+
+👤 <b>Имя:</b> ${name}
+🔧 <b>Услуга:</b> ${formattedService}
+📞 <b>Телефон:</b> ${phone}
+🕐 <b>Время:</b> ${new Date().toLocaleString("ru-RU")}
+      `;
+    }
+    // 5. Универсальная заявка (если ничего не подошло)
+    else {
+      formattedService = service || 'Заявка с сайта';
+      message = `
+🆕 <b>НОВАЯ ЗАЯВКА</b>
+
+🔧 <b>Услуга:</b> ${formattedService}
+${car ? `🚗 <b>Автомобиль:</b> ${car}\n` : ''}
+${name ? `👤 <b>Имя:</b> ${name}\n` : ''}
+📞 <b>Телефон:</b> ${phone}
+🕐 <b>Время:</b> ${new Date().toLocaleString("ru-RU")}
+      `;
     }
 
     // Отправляем в Telegram
@@ -59,6 +111,7 @@ export async function POST(request) {
           chat_id: TELEGRAM_CHAT_ID,
           text: message,
           parse_mode: "HTML",
+          disable_web_page_preview: true,
         }),
       },
     );
@@ -73,7 +126,11 @@ export async function POST(request) {
       );
     }
 
-    return NextResponse.json({ success: true, message: "Заявка отправлена" });
+    return NextResponse.json({ 
+      success: true, 
+      message: "Заявка отправлена",
+      source: source || 'unknown'
+    });
   } catch (error) {
     console.error("Send to Telegram error:", error);
     return NextResponse.json(
