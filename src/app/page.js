@@ -4,6 +4,7 @@ import Services from "./components/main-page/services/Services";
 import UnderHero from "./components/main-page/underhero/Underhero";
 import Faq from "./components/main-page/faq/Faq";
 import Rewievs from "./components/main-page/rewievs/Rewievs";
+import CalcQuiz from "./components/main-page/CalcQuiz/CalcQuiz";
 
 export async function generateMetadata() {
   return {
@@ -57,6 +58,7 @@ export default function Home() {
       <Hero />
       <UnderHero />
       <Services />
+      <CalcQuiz />
       <How />
       <Faq />
       <Rewievs />

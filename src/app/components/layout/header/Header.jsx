@@ -24,7 +24,7 @@ export default function Header() {
       setScrolled(true);
     } else {
       const handleScroll = () => {
-        const isScrolled = window.scrollY > 50;
+        const isScrolled = window.scrollY > -1;
         if (isScrolled !== scrolled) {
           setScrolled(isScrolled);
         }
@@ -51,7 +51,9 @@ export default function Header() {
   return (
     <>
       <div className={`${module.header} ${scrolled ? module.scrolled : ""}`}>
+        {/* <Link className={module.logo} href="/"> */}
         <img src="/svg/logo/garagelogo.svg" alt="Logo" />
+        {/* </Link> */}
 
         <div className={module.nav}>
           <Link href="/#services" onClick={closeMenu}>Услуги</Link>
@@ -111,7 +113,9 @@ export default function Header() {
 
       <div className={`${module.mobile_menu} ${menuOpen ? module.active : ""}`}>
         <div className={module.mobile_logo}>
+          <Link href="/">
           <img src="/svg/logo/garagelogo.svg" alt="Logo" />
+          </Link>
         </div>
 
         <div className={module.close_button} onClick={closeMenu}></div>
