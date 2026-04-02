@@ -59,7 +59,7 @@ const Hero = () => {
               </h1>
               
               <p className={styles.description}>
-                Сделаем так, чтобы не пришлось возвращаться.
+                Автосервис и Эвакуатор Кемерово
               </p>
 
               {/* Список услуг */}
@@ -75,6 +75,10 @@ const Hero = () => {
                 <div className={styles.service_item}>
                   <Image className={styles.icons_points} src="/icons/key.svg" width={28} height={28} alt="Ремонт" />
                   <span>Ремонт</span>
+                </div>
+                <div className={styles.service_item}>
+                  <Image className={styles.icons_points} src="/icons/evakuator1.svg" width={35} height={35} alt="Ремонт" />
+                  <span>Эвакуатор</span>
                 </div>
               </div>
 

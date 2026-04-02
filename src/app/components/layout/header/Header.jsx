@@ -62,8 +62,9 @@ export default function Header() {
           <Link href="/#faq" onClick={closeMenu}>Ответы на вопросы</Link>
         </div>
 
-        <div>
+        <div className={module.mob_cont}>
           {/* 🔥 Max.ru с целью "max" */}
+          <div className={module.social_mob}>
           <Link
             href="https://max.ru/u/f9LHodD0cOJKIJtCLzt9R39PdOR-MG1fi9sdMh9cEZzuXB-ca-EqbrqgtN4"
             target="_blank"
@@ -80,7 +81,7 @@ export default function Header() {
           >
             <img src="/svg/socials/tg.svg" alt="Telegram" />
           </Link>
-          
+          </div>
           <div
             className={`${module.burger} ${menuOpen ? module.active : ""}`}
             onClick={toggleMenu}
@@ -89,7 +90,8 @@ export default function Header() {
             <span></span>
             <span></span>
           </div>
-        </div>
+          </div>
+      
 
         <div>
           {/* 🔥 Телефоны с целью "telephone" */}

@@ -137,10 +137,9 @@ $bp-wide: 1200px;
     border-radius: 16px; // Прямоугольная форма на мобильном — удобнее
     padding: 12px;
     gap: 12px;
-    justify-content: center;
-    
+    justify-items: start;  
     // Две колонки на очень маленьких экранах
-    display: flex;
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
     max-width: 320px;
