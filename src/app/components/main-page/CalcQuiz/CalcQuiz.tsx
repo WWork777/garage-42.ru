@@ -212,7 +212,7 @@ const CalcQuiz = () => {
   };
 
   return (
-    <section className={styles.quiz_section}>
+    <section id="calc2" className={styles.quiz_section}>
       <div className={styles.main_container}>
         <h2 className={styles.main_title}>
           ЗАПОЛНИТЕ ОПРОСНИК <span className={styles.dimmed}>ДЛЯ РАСЧЕТА ТОЧНОЙ <br /> СТОИМОСТИ РАБОТ И ЗАПЧАСТЕЙ</span>

@@ -40,9 +40,9 @@ const Hero = () => {
 
   // Обработчик клика "Рассчитать стоимость"
   const handleCalculateClick = () => {
-    scrollToAnchor('calc');
+    scrollToAnchor('calc2');
     // Обновляем URL (опционально)
-    window.history.pushState(null, '', '/#calc');
+    window.history.pushState(null, '', '/#calc2');
   };
 
   return (
