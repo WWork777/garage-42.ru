@@ -145,7 +145,7 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose }) => {
         
         <div className={styles.header}>
           <div className={styles.iconCircle}> <Image src="/icons/phone.svg" alt="телеграм" width="20" height="20" /> </div>
-          <h2>Заказать звонок</h2>
+          <h2>Свяжитесь с нами!</h2>
           <p>Оставьте номер и мы перезвоним за 30 секунд</p>
         </div>
 
