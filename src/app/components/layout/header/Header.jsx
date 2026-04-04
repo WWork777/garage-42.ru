@@ -3,10 +3,13 @@ import module from "./Header.module.scss";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from "react";
+import OrderModal from '../../main-page/ModalNew/ModalNew';
 
 export default function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const [menuOpen, setMenuOpen] = useState(false);
 
   // 🔥 Helper для вызова целей Яндекс.Метрики (без TypeScript)
@@ -59,7 +62,7 @@ export default function Header() {
           <Link href="/#services" onClick={closeMenu}>Услуги</Link>
           <Link href="/#how" onClick={closeMenu}>Как работаем</Link>
           <Link href="/#reviews" onClick={closeMenu}>Отзывы</Link>
-          <Link href="/#faq" onClick={closeMenu}>Ответы на вопросы</Link>
+          <Link href="" onClick={() => setIsModalOpen(true)}>Эвакуатор круглосуточно</Link>
         </div>
 
         <div className={module.mob_cont}>
@@ -126,8 +129,15 @@ export default function Header() {
           <Link href="/#services" onClick={closeMenu}>Услуги</Link>
           <Link href="/#how" onClick={closeMenu}>Как работаем</Link>
           <Link href="/#reviews" onClick={closeMenu}>Отзывы</Link>
-          <Link href="/#faq" onClick={closeMenu}>Ответы на вопросы</Link>
-        </div>
+<Link 
+  href="/" 
+  onClick={(e) => {
+    setIsModalOpen(true);
+    closeMenu(e); // или closeMenu(), если событие не нужно
+  }}
+>
+  Эвакуатор круглосуточно
+</Link>        </div>
 
         <div className={module.mobile_contacts}>
           <Link 
@@ -164,6 +174,7 @@ export default function Header() {
           </Link>
         </div>
       </div>
+      <OrderModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }
