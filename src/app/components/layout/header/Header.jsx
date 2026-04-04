@@ -129,15 +129,15 @@ export default function Header() {
           <Link href="/#services" onClick={closeMenu}>Услуги</Link>
           <Link href="/#how" onClick={closeMenu}>Как работаем</Link>
           <Link href="/#reviews" onClick={closeMenu}>Отзывы</Link>
-<Link 
-  href="/" 
-  onClick={(e) => {
-    setIsModalOpen(true);
-    closeMenu(e); // или closeMenu(), если событие не нужно
-  }}
->
-  Эвакуатор круглосуточно
-</Link>        </div>
+      <Link 
+        href="/" 
+        onClick={(e) => {
+          setIsModalOpen(true);
+          closeMenu(e); // или closeMenu(), если событие не нужно
+        }}
+      >
+        Эвакуатор круглосуточно
+      </Link>        </div>
 
         <div className={module.mobile_contacts}>
           <Link 
