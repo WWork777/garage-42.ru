@@ -4,6 +4,16 @@ import { NextResponse } from "next/server";
 const TELEGRAM_BOT_TOKEN = "8674335217:AAGz4GRDop_-Q6tH4AkekI8aycD654D2DFA";
 const TELEGRAM_CHAT_ID = "-5256763945";
 
+// Функция форматирования телефона: гарантирует начало с +
+function formatPhone(phone) {
+  if (!phone) return phone;
+  const cleaned = phone.replace(/\s|-|\(|\)/g, ""); // убираем пробелы и скобки
+  if (cleaned.startsWith("+")) return cleaned;
+  if (cleaned.startsWith("8")) return "+7" + cleaned.slice(1);
+  if (cleaned.startsWith("7")) return "+" + cleaned;
+  return "+" + cleaned; // на всякий случай
+}
+
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -30,6 +40,9 @@ export async function POST(request) {
       );
     }
 
+    // Форматируем телефон
+    const formattedPhone = formatPhone(phone);
+
     // Определяем источник и формируем сообщение
     let message = "";
     let formattedService = service;
@@ -45,8 +58,7 @@ export async function POST(request) {
 📏 <b>Пробег:</b> ${currentMileage || 'Не указан'}
 🔩 <b>Запчасти:</b> ${needsParts || 'Не указано'}
 👤 <b>Имя:</b> ${name || 'Не указано'}
-📞 <b>Телефон:</b> ${phone}
-🕐 <b>Время:</b> ${new Date().toLocaleString("ru-RU")}
+📞 <b>Телефон:</b> ${formattedPhone}
       `;
     }
     // 2. Заказ звонка (OrderModal)
@@ -57,8 +69,7 @@ export async function POST(request) {
 
 🔧 <b>Тип услуги:</b> ${formattedService}
 👤 <b>Имя:</b> ${name || 'Не указано'}
-📞 <b>Телефон:</b> ${phone}
-🕐 <b>Время:</b> ${new Date().toLocaleString("ru-RU")}
+📞 <b>Телефон:</b> ${formattedPhone}
       `;
     }
     // 3. Заявка с главной формы Hero (есть car, нет name)
@@ -69,8 +80,7 @@ export async function POST(request) {
 
 🔧 <b>Услуга:</b> ${formattedService}
 🚗 <b>Автомобиль:</b> ${car}
-📞 <b>Телефон:</b> ${phone}
-🕐 <b>Время:</b> ${new Date().toLocaleString("ru-RU")}
+📞 <b>Телефон:</b> ${formattedPhone}
       `;
     }
     // 4. Заявка из модального окна Services (есть name, нет car)
@@ -81,8 +91,7 @@ export async function POST(request) {
 
 👤 <b>Имя:</b> ${name}
 🔧 <b>Услуга:</b> ${formattedService}
-📞 <b>Телефон:</b> ${phone}
-🕐 <b>Время:</b> ${new Date().toLocaleString("ru-RU")}
+📞 <b>Телефон:</b> ${formattedPhone}
       `;
     }
     // 5. Универсальная заявка (если ничего не подошло)
@@ -94,8 +103,7 @@ export async function POST(request) {
 🔧 <b>Услуга:</b> ${formattedService}
 ${car ? `🚗 <b>Автомобиль:</b> ${car}\n` : ''}
 ${name ? `👤 <b>Имя:</b> ${name}\n` : ''}
-📞 <b>Телефон:</b> ${phone}
-🕐 <b>Время:</b> ${new Date().toLocaleString("ru-RU")}
+📞 <b>Телефон:</b> ${formattedPhone}
       `;
     }
 
