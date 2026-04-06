@@ -233,7 +233,7 @@
       flex-direction: column;
     }
 
-    button {
+    Link {
       padding: 14px 24px;
       border-radius: 999px;
       font-size: 16px;
@@ -256,6 +256,25 @@
       background: #ee122a;
       color: white;
       border: none;
+       padding: 14px 40px;
+    border-radius: 999px;
+    background: #ee122a;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+      text-align: center;
+    @media (max-width: 768px) {
+      padding: 12px 32px;
+      font-size: 15px;
+    }
+
+    &:hover {
+      background: #ff2a42;
+      transform: translateY(-2px);
+    }
+  
 
       &:hover {
         background: #ff243c;

@@ -245,15 +245,22 @@ function ServicesCard({ title, time, image, price, garanty, fullDescription, slu
         {/* <button className={module.services_card__buttons__cta} onClick={() => onBookingClick({ title, time, image, price, garanty, fullDescription })}>
           Позвонить
         </button> */}
-        <button className={module.services_card__buttons__cta} >
+        
           <Link 
                       href="tel:+79235670063" 
                       className={module.services_card__buttons__cta}
-                      onClick={() => trackGoal('telephone')}
+                       onClick={() => {
+    // 🔥 Трекинг Яндекс.Метрики
+    if (typeof window !== "undefined" && window.ym) {
+      window.ym(106779809, "reachGoal", "telephone");
+    }
+    // 📞 Вызов набора номера
+    window.location.href = "tel:+79235670063";
+  }}
                     >
                      Позвонить
                     </Link>
-        </button>
+        
         {/* 🔥 Используем готовый slug из данных */}
         <Link  href={`/${slug}`} className={`${module.services_card__buttons__more} ${module.link_more}`}>
           Подробнее
