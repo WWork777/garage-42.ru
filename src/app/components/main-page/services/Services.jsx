@@ -242,8 +242,17 @@ function ServicesCard({ title, time, image, price, garanty, fullDescription, slu
         </div>
       </div>
       <div className={module.services_card__buttons}>
-        <button className={module.services_card__buttons__cta} onClick={() => onBookingClick({ title, time, image, price, garanty, fullDescription })}>
-          Записаться
+        {/* <button className={module.services_card__buttons__cta} onClick={() => onBookingClick({ title, time, image, price, garanty, fullDescription })}>
+          Позвонить
+        </button> */}
+        <button className={module.services_card__buttons__cta} >
+          <Link 
+                      href="tel:+79235670063" 
+                      className={module.services_card__buttons__cta}
+                      onClick={() => trackGoal('telephone')}
+                    >
+                     Позвонить
+                    </Link>
         </button>
         {/* 🔥 Используем готовый slug из данных */}
         <Link  href={`/${slug}`} className={`${module.services_card__buttons__more} ${module.link_more}`}>

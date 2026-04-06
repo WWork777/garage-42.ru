@@ -66,7 +66,7 @@ export const servicesData = [
   {
     // 🔥 НОВАЯ УСЛУГА: Эвакуация
     title: "Эвакуация автомобилей",
-    time: "от 15 минут | Круглосуточно",
+    time: "от 15 минут | Круглосуточно 24/7",
     image: "/images/services/3.webp",
     price: "от 4 000",
     garanty: "—",
