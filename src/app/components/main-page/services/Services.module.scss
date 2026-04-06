@@ -1015,3 +1015,56 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+
+
+/* 🔥 Выделение карточки "Эвакуация" */
+.services_card__emergency {
+  position: relative;
+  // border: 2px solid #e74c3c; /* Красная рамка */
+  border-radius: inherit;
+  //  background: linear-gradient(135deg, rgba(231, 76, 60, 0.08), transparent);
+
+  /* Заголовок — жирный + красный */
+  .services_card__info h3 {
+    font-weight: 700 !important;
+    font-size: 1.25rem !important; /* Чуть крупнее */
+    color: #e74c3c !important; /* Насыщенный красный */
+    line-height: 1.3;
+  }
+
+  /* Описание / время / цена — тоже выделяем */
+  .services_card__info p,
+  {
+    font-weight: 600 !important;
+     color: #e74c3c !important;
+ }
+
+  /* Кнопка "Позвонить" — акцентная */
+  // .services_card__buttons__cta {
+  //   background: #e74c3c !important;
+  //   color: #fff !important;
+  //   border-color: #c0392b !important;
+  //   font-weight: 700 !important;
+
+  //   &:hover {
+  //     background: #c0392b !important;
+  //     transform: translateY(-2px);
+  //   }
+  // }
+
+  /* Опционально: бейдж "24/7" в углу карточки */
+  &::after {
+    content: "24/7";
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #e74c3c;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    line-height: 1;
+  }
+}

@@ -226,8 +226,7 @@ function ServicesCard({ title, time, image, price, garanty, fullDescription, slu
   // const slug = transliterateToSlug(title);
 
   return (
-    <div className={module.services_card}>
-      <img src={image} alt={title} />
+<div className={`${module.services_card} ${slug === 'evakuaciya-avtomobilej' ? module.services_card__emergency : ''}`}>      <img src={image} alt={title} />
       <div className={module.services_card__info}>
         <h3>{title}</h3>
         <div className={module.services_card__info__time_garanty}>
