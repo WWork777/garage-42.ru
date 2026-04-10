@@ -59,7 +59,8 @@ const Hero = () => {
               </h1>
               
               <p className={styles.description}>
-                Автосервис и Эвакуатор Кемерово
+                Автосервис и Эвакуатор Кемерово <br />
+                <span className={styles.timeWork}>Пн-Вс: 10:00 - 20:00</span>
               </p>
 
               {/* Список услуг */}

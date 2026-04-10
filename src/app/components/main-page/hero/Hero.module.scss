@@ -551,3 +551,10 @@ $bp-wide: 1200px;
 .btn_red:hover {
   animation: pulse 1.8s infinite;
 }
+
+
+.timeWork { 
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
