@@ -85,6 +85,15 @@ export default function Header() {
             <img src="/svg/socials/tg.svg" alt="Telegram" />
           </Link>
           </div>
+           <Link 
+            href="tel:+79235670063" 
+            className={`${module.phone} ${module.phoneMob}`}
+            onClick={() => trackGoal('telephone')}
+          >
+            +7 (923) 567-00-63
+          </Link>
+
+
           <div
             className={`${module.burger} ${menuOpen ? module.active : ""}`}
             onClick={toggleMenu}
@@ -154,7 +163,7 @@ export default function Header() {
           >
             +7 (384) 267-00-63
           </Link>
-          <span className={module.time}>Пн-Сб: 10:00 - 20:00</span>
+          <span className={module.time}>Пн-Вс: 10:00 - 20:00</span>
         </div>
 
         <div className={module.mobile_socials}>

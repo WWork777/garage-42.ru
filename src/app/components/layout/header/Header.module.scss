@@ -225,6 +225,7 @@
     align-items: center;
     
     @media (max-width: 768px) {
+      display: none;
 column-gap: 12px;
       // position: absolute;
       // left: 50%;
@@ -693,3 +694,11 @@ column-gap: 12px;
   }
 }
 
+
+
+.phoneMob { 
+  @media (min-width: 769px) {
+    display: none;
+    
+  }
+}

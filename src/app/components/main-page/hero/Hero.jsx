@@ -78,7 +78,7 @@ const Hero = () => {
                 </div>
                 <div className={styles.service_item}>
                   <Image className={styles.icons_points} src="/icons/evakuator1.svg" width={35} height={35} alt="Ремонт" />
-                  <span>Эвакуатор</span>
+                  <span>Эвакуатор 24/7</span>
                 </div>
               </div>
 
